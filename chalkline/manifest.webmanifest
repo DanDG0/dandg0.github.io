@@ -1,0 +1,14 @@
+{
+  "name": "Chalkline Lesson Planner",
+  "short_name": "Chalkline",
+  "description": "Lesson ideas, calendar planning, classroom themes and morning routines for teachers.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EDF1EC",
+  "theme_color": "#1E4A3B",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

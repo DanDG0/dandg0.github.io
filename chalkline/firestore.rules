@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    // The app owner can remove anyone's uploads (moderation).
+    function isAdmin() {
+      return signedIn() && request.auth.token.email == "danieldegois01@gmail.com"
+        && request.auth.token.email_verified == true;
+    }
+    // Each teacher has one document per library holding a list of their uploads.
+    function validUploads() {
+      return request.resource.data.keys().hasOnly(["items"])
+        && request.resource.data.items is list
+        && request.resource.data.items.size() <= 60;
+    }
+
+    // Shared libraries: anyone can read; you can only write your own document.
+    match /lessons/{uid}  { allow read: if true; allow write: if signedIn() && (request.auth.uid == uid || isAdmin()) && validUploads(); allow delete: if isAdmin(); }
+    match /themes/{uid}   { allow read: if true; allow write: if signedIn() && (request.auth.uid == uid || isAdmin()) && validUploads(); allow delete: if isAdmin(); }
+    match /routines/{uid} { allow read: if true; allow write: if signedIn() && (request.auth.uid == uid || isAdmin()) && validUploads(); allow delete: if isAdmin(); }
+
+    // Private per-teacher data: profile, saves, calendar, routine.
+    match /data/users/{uid}/{doc} { allow read, write: if signedIn() && request.auth.uid == uid; }
+
+    // Lets the app check whether the signed-in user is the admin.
+    match /meta/admin { allow read: if isAdmin(); }
+  }
+}
