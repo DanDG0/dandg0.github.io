@@ -243,6 +243,8 @@ textarea.inp{min-height:96px;resize:vertical;line-height:1.45}
 .tabs.four{grid-template-columns:repeat(4,1fr)}
 .tabs.five{grid-template-columns:repeat(5,1fr);padding-inline:2px}
 .tabs.five .tab{font-size:11px}
+.stag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff;background:hsl(var(--h,150) 50% 38%)}
+.stag.on-board{background:rgba(255,255,255,.16);color:var(--on-board);padding:2px 8px;margin-right:4px}
 .gtag{align-self:flex-start;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--paper);border:1px solid var(--line);color:var(--muted);font-variant-numeric:tabular-nums}
 .gtag.on{background:var(--marker);border-color:transparent;color:var(--ink)}
 .chip.locked{cursor:default;background:var(--ink);color:var(--paper);border-color:var(--ink);opacity:.85}
@@ -652,6 +654,132 @@ const LIBRARY = [
     materials: ["Square card tiles (9 cm)", "Fine black pens", "Pencils for strings"],
     steps: ["5|Draw a pencil ‘string’ to divide the tile into sections", "15|Learn patterns from the tutorial, pausing to practise each", "20|Fill each section with a different pattern", "5|Add shading with pencil and display tiles together"],
     tags: ["art", "zentangle", "patterns", "mindfulness", "drawing"] }),
+  L({ id: "quadratics-desmos", title: "Exploring Parabolas with Desmos", subject: "Maths", grades: [9, 12], duration: 60, costUSD: 0,
+    summary: "Learners use sliders in Desmos to discover how a, p and q change the shape of y = a(x+p)² + q.",
+    description: "Instead of plotting tables by hand, learners investigate quadratic functions in the free Desmos graphing calculator. Sliders let them change one parameter at a time and write a rule for each effect, then they match graphs to equations in a quick challenge round.",
+    objectives: ["Describe the effect of a, p and q on a parabola", "Identify turning point, axis of symmetry and intercepts", "Sketch a quadratic from its equation"],
+    materials: ["Phones, tablets or computers with Desmos (free)", "Investigation worksheet", "Graph-matching cards"],
+    steps: ["5|Show three parabolas: what’s the same, what’s different?", "20|Slider investigation for a, then p, then q; record rules", "15|Find turning points and intercepts for given equations", "15|Graph-matching challenge in pairs", "5|Exit ticket: sketch y = −2(x−1)² + 3"],
+    tags: ["quadratics", "functions", "graphs", "desmos", "algebra"] }),
+  L({ id: "clinometer-trig", title: "Measure the School with Trigonometry", subject: "Maths", grades: [9, 11], duration: 60, costUSD: 1,
+    summary: "Build a clinometer from a protractor and straw, then use tan to find the height of real buildings.",
+    description: "Learners make a simple clinometer, go outside, measure their distance from a tall object and its angle of elevation, then calculate the height with the tangent ratio. Groups compare answers and discuss sources of error.",
+    objectives: ["Apply the tangent ratio to angles of elevation", "Take careful measurements outdoors", "Evaluate accuracy and sources of error"],
+    materials: ["Protractors", "Straws", "String and a small weight", "Tape measures", "Recording sheet"],
+    steps: ["10|Build clinometers following the video", "10|Model one calculation on the board", "25|Groups measure three objects outside", "10|Calculate heights and compare results", "5|Discuss: why do groups get different answers?"],
+    tags: ["trigonometry", "measurement", "outdoor", "geometry"] }),
+  L({ id: "dice-probability", title: "Dice Experiments: Theory vs Reality", subject: "Maths", grades: [8, 10], duration: 50, costUSD: 1,
+    summary: "Roll dice hundreds of times as a class and compare experimental results with theoretical probability.",
+    description: "Pairs predict the probability of outcomes for one and two dice, then roll and tally. Pooling class results shows how experimental probability approaches theory as the number of trials grows. Ends with a discussion of the sum-of-two-dice distribution.",
+    objectives: ["Calculate theoretical probability", "Find experimental relative frequency", "Explain the law of large numbers in simple terms"],
+    materials: ["Two dice per pair", "Tally sheets", "Class results chart"],
+    steps: ["5|Predict: which sum of two dice is most likely?", "15|Roll 50 times and tally sums", "10|Pool class data on the board", "15|Compare with the 6×6 outcome table", "5|Reflect on the difference between 50 and 1 000 rolls"],
+    tags: ["probability", "statistics", "data", "experiment"] }),
+  L({ id: "tpcastt-poetry", title: "Unlocking Poems with TP-CASTT", subject: "English", grades: [8, 12], duration: 55, costUSD: 0,
+    summary: "A seven-step method that helps learners analyse any poem: title, paraphrase, connotation, attitude, shifts, title again, theme.",
+    description: "Learners practise TP-CASTT on a short poem together, then apply it in groups to a second poem. It gives a clear structure for analysis paragraphs and works with any prescribed poetry.",
+    objectives: ["Analyse a poem systematically", "Identify tone, shifts and theme", "Support interpretations with quotations"],
+    materials: ["Two short poems", "TP-CASTT organiser", "Highlighters"],
+    steps: ["5|Predict meaning from the title alone", "15|Model TP-CASTT on poem one", "20|Groups apply it to poem two", "10|Each group writes one theme statement with evidence", "5|Share and compare interpretations"],
+    tags: ["poetry", "analysis", "literature", "tpcastt"] }),
+  L({ id: "argumentative-essay", title: "Writing an Argumentative Essay", subject: "English", grades: [9, 12], duration: 60, costUSD: 0,
+    summary: "Plan and draft a five-paragraph argumentative essay with a clear claim, evidence and a counter-argument.",
+    description: "Learners pick a debatable topic, write a thesis statement, gather evidence for two reasons, and address the opposing view. A peer-review checklist helps them strengthen the draft before the final copy.",
+    objectives: ["Write a clear, arguable thesis", "Support claims with evidence and reasoning", "Acknowledge and rebut a counter-argument"],
+    materials: ["Topic list", "Essay planner", "Peer-review checklist"],
+    steps: ["10|Watch the tutorial and unpack an example essay", "10|Choose a topic and write a thesis", "25|Plan and draft body paragraphs", "10|Peer review with the checklist", "5|Set goals for the final draft"],
+    tags: ["writing", "essay", "argument", "persuasive"] }),
+  L({ id: "romeo-juliet-act1", title: "Romeo and Juliet: Act 1 in Action", subject: "English", grades: [9, 11], duration: 60, costUSD: 0,
+    summary: "Act out key scenes from Act 1 to understand character, conflict and Shakespeare’s language.",
+    description: "After a quick plot overview, groups rehearse and perform short sections of Act 1 (the street brawl, the party meeting). Performing helps learners decode the language and notice how Shakespeare builds conflict and foreshadowing.",
+    objectives: ["Summarise the main events of Act 1", "Interpret Shakespearean language in context", "Identify foreshadowing and conflict"],
+    materials: ["Act 1 scene extracts", "Modern-English glossary", "Simple props (optional)"],
+    steps: ["5|Watch the 3-minute summary", "10|Assign scenes and roles", "20|Rehearse with the glossary", "15|Perform and discuss each scene", "10|Write: what warning signs does the audience get?"],
+    tags: ["shakespeare", "drama", "literature", "performance"] }),
+  L({ id: "acid-base-titration", title: "Acid–Base Titration Practical", subject: "Science", grades: [11, 12], duration: 90, costUSD: 5,
+    summary: "Determine the concentration of an unknown acid by titrating it against a standard base.",
+    description: "Learners set up a burette, use an indicator to find the endpoint, record concordant titres and calculate the unknown concentration using n = cV. Emphasise accurate reading of the meniscus and lab safety.",
+    objectives: ["Carry out a titration accurately", "Identify the endpoint with an indicator", "Calculate concentration from titration data"],
+    materials: ["Burettes, pipettes and conical flasks", "Standard NaOH solution", "Unknown HCl solution", "Phenolphthalein", "Safety goggles"],
+    steps: ["10|Safety briefing and watch the technique video", "10|Set up and rinse equipment", "40|Rough titration, then three accurate titrations", "20|Calculate the concentration", "10|Discuss sources of error"],
+    tags: ["chemistry", "practical", "titration", "acidsandbases"] }),
+  L({ id: "strawberry-dna", title: "Extract DNA from Strawberries", subject: "Science", grades: [8, 11], duration: 45, costUSD: 3,
+    summary: "Use soap, salt and cold alcohol to pull visible strands of DNA out of strawberries.",
+    description: "A memorable practical that makes DNA real. Learners mash strawberries in an extraction buffer, filter, then layer cold alcohol so DNA precipitates as white strands they can spool on a stick. Link each step to cell structure.",
+    objectives: ["Explain the role of each reagent", "Relate the method to cell and nuclear membranes", "Describe what DNA looks like in bulk"],
+    materials: ["Strawberries", "Zip-lock bags", "Dish soap and salt", "Coffee filters", "Ice-cold rubbing alcohol", "Test tubes and wooden sticks"],
+    steps: ["5|Ask: where is DNA, and could we see it?", "10|Mash strawberries in buffer", "10|Filter into test tubes", "10|Add cold alcohol and spool the DNA", "10|Explain each step in a flow diagram"],
+    tags: ["biology", "dna", "practical", "genetics"] }),
+  L({ id: "egg-drop", title: "Egg Drop: Newton’s Laws Challenge", subject: "Science", grades: [8, 10], duration: 90, costUSD: 3,
+    summary: "Design a device that protects an egg from a high drop, then explain it with force, momentum and impulse.",
+    description: "Teams get limited materials and must keep an egg intact from a balcony or ladder. Afterwards they explain their design using Newton’s laws and the idea that increasing stopping time reduces force.",
+    objectives: ["Apply Newton’s second law to impacts", "Explain how increasing impact time reduces force", "Test and improve a design"],
+    materials: ["Eggs", "Straws, paper, tape, string, plastic bags", "Measuring tape", "Design sheet"],
+    steps: ["10|Watch the video and introduce impulse", "30|Teams design and build", "20|Drop tests", "20|Teams explain results using physics", "10|Redesign suggestions"],
+    tags: ["physics", "forces", "engineering", "design"] }),
+  L({ id: "first-cv", title: "Write Your First CV", subject: "Life Skills", grades: [10, 12], duration: 60, costUSD: 0,
+    summary: "Learners turn school, volunteer and home experience into a one-page CV for a first job.",
+    description: "Many learners think they have nothing to put on a CV. This lesson helps them list skills from school projects, sport, church or community work and household responsibilities, then format a clear one-page CV and a short cover message.",
+    objectives: ["Identify transferable skills", "Structure a one-page CV", "Write a short, professional cover message"],
+    materials: ["CV template", "Example CVs (good and weak)", "Devices or paper"],
+    steps: ["10|Compare a strong and a weak CV", "10|Brainstorm skills from everyday life", "25|Draft the CV using the template", "10|Peer feedback", "5|Write a two-line cover message"],
+    tags: ["careers", "cv", "lifeorientation", "workreadiness"] }),
+  L({ id: "budget-first-salary", title: "Budgeting Your First Salary", subject: "Life Skills", grades: [10, 12], duration: 50, costUSD: 0,
+    summary: "Use the 50/30/20 rule to plan a realistic monthly budget for a first job.",
+    description: "Learners receive a scenario card with a starting salary in local currency, then split it into needs, wants and savings. They research real costs (transport, data, rent share) and adjust when life events happen.",
+    objectives: ["Apply the 50/30/20 budgeting rule", "Distinguish needs from wants", "Plan for savings and emergencies"],
+    materials: ["Salary scenario cards", "Budget worksheet", "Calculators", "Local price lists"],
+    steps: ["10|Watch the 50/30/20 video", "15|Build a budget from the scenario card", "10|Life-event card: adjust the budget", "10|Compare choices in groups", "5|One money goal for this year"],
+    tags: ["financialliteracy", "money", "budgeting", "lifeorientation"] }),
+  L({ id: "mapwork-cross-sections", title: "Mapwork: Contours and Cross-Sections", subject: "Social Sciences", grades: [10, 12], duration: 60, costUSD: 0,
+    summary: "Read contour lines and draw an accurate cross-section between two points on a topographic map.",
+    description: "Learners identify landforms from contour patterns, then use the paper-strip method to transfer heights and draw a cross-section. They calculate vertical exaggeration and decide whether two points are intervisible.",
+    objectives: ["Interpret contour patterns and landforms", "Draw a cross-section accurately", "Calculate vertical exaggeration and intervisibility"],
+    materials: ["Topographic map extracts", "Paper strips", "Graph paper", "Rulers and sharp pencils"],
+    steps: ["10|Identify landforms from contour patterns", "10|Model the paper-strip method", "25|Draw a cross-section between two points", "10|Calculate vertical exaggeration", "5|Is point B visible from point A?"],
+    tags: ["geography", "mapwork", "contours", "caps"] }),
+  L({ id: "soweto-1976", title: "The 1976 Soweto Uprising: Source Analysis", subject: "Social Sciences", grades: [9, 12], duration: 60, countries: ["ZA"], regions: ["Africa"], costUSD: 0,
+    summary: "Analyse photographs, testimonies and newspaper reports to understand why students protested on 16 June 1976.",
+    description: "Learners examine a set of sources about the student uprising against Afrikaans as a medium of instruction. They assess usefulness and reliability, compare perspectives, and write a paragraph explaining the causes and impact. Handle with sensitivity; some images are distressing.",
+    objectives: ["Analyse sources for usefulness and reliability", "Explain the causes of the 1976 uprising", "Understand its legacy and Youth Day"],
+    materials: ["Source pack (photos, testimony, newspaper extracts)", "Source analysis frame", "Timeline"],
+    steps: ["10|Watch the video and build a timeline", "20|Group source analysis using the frame", "15|Compare perspectives across sources", "15|Write an explanatory paragraph"],
+    tags: ["history", "apartheid", "sourceanalysis", "youthday", "caps"] }),
+  L({ id: "wwi-causes", title: "Causes of World War I: MAIN", subject: "Social Sciences", grades: [9, 11], duration: 55, costUSD: 0,
+    summary: "Rank Militarism, Alliances, Imperialism and Nationalism, plus the assassination, as causes of WWI.",
+    description: "Learners learn the MAIN framework, then sort evidence cards into each cause and debate which was most important. They finish with a structured paragraph that weighs causes against each other.",
+    objectives: ["Explain the long- and short-term causes of WWI", "Use evidence to support a judgement", "Write a balanced causation paragraph"],
+    materials: ["Evidence cards", "Diamond-ranking sheet", "Map of 1914 Europe"],
+    steps: ["10|Watch the MAIN video", "15|Sort evidence cards by cause", "15|Diamond-rank the causes and justify", "15|Write a judgement paragraph"],
+    tags: ["history", "worldwar1", "causation", "europe"] }),
+  L({ id: "python-guessing-game", title: "Code a Number Guessing Game in Python", subject: "Technology", grades: [8, 12], duration: 60, costUSD: 0,
+    summary: "Learners write their first interactive program using variables, loops, input and if-statements.",
+    description: "Following the tutorial, learners build a game where the computer picks a random number and the player guesses with ‘higher’ or ‘lower’ hints. Extensions add a guess counter, difficulty levels and replay. Works in any free online Python editor.",
+    objectives: ["Use variables, input and random numbers", "Write while loops and if/elif/else statements", "Debug a simple program"],
+    materials: ["Computers or tablets", "Free online Python editor (e.g. replit.com or trinket.io)"],
+    steps: ["5|Play the finished game", "25|Build it step by step with the video", "15|Add a guess counter and difficulty levels", "10|Swap and test a partner’s game", "5|Reflect: which bug was hardest to fix?"],
+    tags: ["coding", "python", "programming", "computerscience"] }),
+  L({ id: "series-parallel-circuits", title: "Series and Parallel Circuits", subject: "Technology", grades: [8, 10], duration: 60, costUSD: 4,
+    summary: "Build both circuit types and measure how brightness, current and voltage change.",
+    description: "Groups build series and parallel circuits with bulbs and cells, predict what happens when a bulb is removed, and measure current and voltage. They connect findings to why houses are wired in parallel.",
+    objectives: ["Build series and parallel circuits", "Measure current and voltage", "Explain household wiring choices"],
+    materials: ["Cells and holders", "Bulbs", "Connecting wires", "Switches", "Multimeters"],
+    steps: ["10|Watch the explainer and draw circuit symbols", "20|Build a series circuit, then a parallel one", "15|Measure and record current and voltage", "10|Remove a bulb: what happens in each?", "5|Why are homes wired in parallel?"],
+    tags: ["electricity", "circuits", "practical", "physics"] }),
+  L({ id: "spaghetti-bridge", title: "Spaghetti Bridge Challenge", subject: "Technology", grades: [8, 10], duration: 90, costUSD: 3,
+    summary: "Design and build the strongest bridge possible from spaghetti and glue, then load-test it.",
+    description: "Teams research truss designs, sketch a plan, build to a set span and test with weights until failure. They calculate strength-to-weight ratio and evaluate where and why their bridge failed.",
+    objectives: ["Apply triangulation and truss structures", "Follow the design process", "Calculate strength-to-weight ratio"],
+    materials: ["Spaghetti", "Glue gun or marshmallows", "Weights or sand in a bucket", "Scale"],
+    steps: ["10|Watch the video and study truss shapes", "15|Sketch and plan", "40|Build to a 30 cm span", "15|Load test", "10|Evaluate failure points"],
+    tags: ["structures", "engineering", "design", "stem"] }),
+  L({ id: "portrait-proportions", title: "Drawing Faces: Portrait Proportions", subject: "Art", grades: [8, 12], duration: 60, costUSD: 0.5,
+    summary: "Use guidelines to place eyes, nose, mouth and ears in proportion, then draw a self-portrait.",
+    description: "Learners learn the classic proportion guidelines (eyes halfway, nose and mouth thirds, ears between brow and nose) and practise on a template before drawing a self-portrait from a mirror or photo.",
+    objectives: ["Apply standard facial proportions", "Use light construction lines", "Observe and draw from life"],
+    materials: ["Drawing paper", "HB and 2B pencils", "Erasers", "Mirrors or printed photos"],
+    steps: ["10|Watch the proportions tutorial", "15|Practise the guideline template", "30|Draw a self-portrait", "5|Peer feedback on proportions"],
+    tags: ["art", "portrait", "drawing", "observation"] }),
 ];
 
 const VIDEOS = {
@@ -685,6 +813,24 @@ const VIDEOS = {
   "pinch-pots": ["GfJdXKA8FaM", "Clay Pinch Pot Tutorial for Beginners"],
   "one-point-perspective": ["CMrDAbXyWyM", "How to Draw a Classroom in One-Point Perspective"],
   "zentangle": ["6DuwusxV3y8", "Zentangle Art for Beginners (Step-by-Step Tutorial)"],
+  "quadratics-desmos": ["Y9PNH4RgsH0", "Using Desmos to graph quadratic functions and find attributes"],
+  "clinometer-trig": ["rd9Z8P5uG50", "Make a clinometer and measure height (Trigonometry)"],
+  "dice-probability": ["o0Am2nkl02A", "Rolling Dice – Theoretical vs Experimental Probability"],
+  "tpcastt-poetry": ["dPv3FnzbzH0", "TP-CASTT Poetry Analysis"],
+  "argumentative-essay": ["v_D6K42DTSA", "How to Write an Argumentative Essay"],
+  "romeo-juliet-act1": ["tSfExfrP1oI", "3-Minute Shakespeare – Romeo and Juliet"],
+  "acid-base-titration": ["HVjvFydMOc8", "How to Perform an Acid-Base Titration"],
+  "strawberry-dna": ["JofXXyFZn38", "DIY Science: How to Extract DNA from a Strawberry"],
+  "egg-drop": ["k9-V6jqV5Lw", "Applying Newton’s Laws – Egg Drop Challenge"],
+  "first-cv": ["vQMgIBJ92f8", "How to Write Your First CV with No Experience"],
+  "budget-first-salary": ["OZQQMYfaBT4", "The 50-30-20 Rule – Budgeting for Needs, Wants, and Savings"],
+  "mapwork-cross-sections": ["9w-KOodmiZc", "Cross section mapwork"],
+  "soweto-1976": ["Nv3FBT4bcbw", "1976 Soweto Uprising"],
+  "wwi-causes": ["BLpq7cB8P28", "The 4 MAIN Causes of World War I"],
+  "python-guessing-game": ["J9RQcF7hhgA", "Random Number Guessing Game – Python (Beginners)"],
+  "series-parallel-circuits": ["8FrdDrKIADw", "Series & Parallel Circuits: Theory, Uses, and How They Work"],
+  "spaghetti-bridge": ["hwNrBeE71Tk", "Spaghetti Bridge! Students design a bridge with spaghetti"],
+  "portrait-proportions": ["1kHzAh9sCH4", "How to Draw Facial Proportions"],
 };
 LIBRARY.forEach(l => { const v = VIDEOS[l.id]; l.videoUrl = v ? "https://www.youtube.com/watch?v=" + v[0] : ""; l.videoTitle = v ? v[1] : ""; delete l.video; });
 // A demo link must point at one video, not a search page or channel.
@@ -794,7 +940,8 @@ const myGrade = () => S.profile?.phase === "primary" ? S.profile.grade : null;
 const forMyGrade = g => myGrade() !== null && g[0] <= myGrade() && g[1] >= myGrade();
 function gradePicker(sel, sys) { return Array.from({ length: UNDER10_MAX + 1 }, (_, i) => `<button type="button" class="chip" data-gr="${i}" aria-pressed="${i === sel}">${esc(gradeOne(i, sys))}</button>`).join(""); }
 const ageFiltered = () => !ui.allAges;
-const inPhase = l => { const r = phaseRange(S.profile.phase, S.profile.country); return l.grades[0] <= r[1] && l.grades[1] >= r[0]; };
+// Primary: any overlap with the under-10 range. Intermediate/high school: the lesson must also start no more than 1 grade below the stage.
+const inPhase = l => { const r = phaseRange(S.profile.phase, S.profile.country); const overlap = l.grades[0] <= r[1] && l.grades[1] >= r[0]; return S.profile.phase === "primary" ? overlap : overlap && l.grades[0] >= r[0] - 1; };
 const ageOk = l => !ageFiltered() || inPhase(l);
 const under10Range = sys => rangeText([0, UNDER10_MAX], sys);
 // Main feed relevance is worldwide: phase/subjects and how universal a plan is. Country only drives the local block.
@@ -802,7 +949,7 @@ function score(l) {
   const p = S.profile; let s = 0, why = "";
   if (forMyGrade(l.grades)) { s += 5; why = "Made for " + gradeOne(p.grade, C().grade); }
   if (inPhase(l)) { s += 3; why = why || (p.phase === "primary" ? "Great for under-10s" : "Right for " + phaseName(p.phase, p.country)); }
-  if (p.phase !== "primary" && p.subjects.includes(l.subject)) { s += 3; why = "Matches your subjects"; }
+  if (p.phase !== "primary" && p.subjects.includes(l.subject)) { s += 8; why = "Your subject: " + l.subject; }
   if (!l.countries.length) { s += 1.5; why = why || "Works in any classroom"; } else s -= 1;
   if (l.community) { s += 0.6; why = why || "New from the community"; }
   if (S.saves.includes(l.id)) s -= 0.5;
@@ -814,7 +961,7 @@ function localLessonsFor(cc) {
 }
 function ageNote() {
   const p = S.profile, nm = p.phase === "primary" ? "under-10s" : phaseName(p.phase, p.country);
-  const first = p.phase === "primary" ? `, ${esc(gradeOne(p.grade, C().grade))} first` : "";
+  const first = p.phase === "primary" ? `, ${esc(gradeOne(p.grade, C().grade))} first` : (p.subjects.length ? `, ${esc(p.subjects.join(", "))} first` : "");
   return ui.allAges ? `<p class="hint">Showing all ages${first} · <button class="link" data-act="ages">Back to ${esc(nm)}</button></p>`
     : `<p class="hint">Showing plans for ${esc(nm)} (${esc(rangeText(phaseRange(p.phase, p.country), C().grade))})${first} · <button class="link" data-act="ages">Show all ages</button></p>`;
 }
@@ -833,13 +980,16 @@ function openLocal() {
     </div>`;
   });
 }
+const subjSlug = s => s.toLowerCase().replace(/[^a-z]/g, "");
+const subjTag = s => `<span class="stag" style="--h:${hue(s)}">${esc(s)}</span>`;
 function parseQuery(q) {
   const tags = [], words = [];
   q.toLowerCase().split(/\s+/).filter(Boolean).forEach(t => { if (t.startsWith("#")) { const c = cleanTag(t); if (c) tags.push(c); } else words.push(t); });
   return { tags, words };
 }
 function matches(l, { tags, words }) {
-  if (!tags.every(t => l.tags.some(x => x.startsWith(t)))) return false;
+  const all = [...l.tags, subjSlug(l.subject)];
+  if (!tags.every(t => all.some(x => x.startsWith(t)))) return false;
   const hay = [l.title, l.summary, l.description, l.subject, l.author, ...l.tags, ...l.objectives].join(" ").toLowerCase();
   return words.every(w => hay.includes(w));
 }
@@ -869,7 +1019,7 @@ function cardHTML(l) {
       <h3>${esc(l.title)}</h3>
       <p class="sum">${esc(l.summary)}</p>
       <span class="meta">${metaLine(l)}</span>
-      <span class="tags">${l.tags.slice(0, 3).map(t => `<span class="tag">#${esc(t)}</span>`).join("")}</span>
+      <span class="tags">${subjTag(l.subject)}${l.tags.slice(0, 3).map(t => `<span class="tag">#${esc(t)}</span>`).join("")}</span>
     </button>
     <button class="iconbtn ${saved ? "on" : ""}" data-save="${esc(l.id)}" aria-pressed="${saved}" aria-label="${saved ? "Remove from saves" : "Save lesson"}">${saved ? I.bmOn : I.bm}</button>
   </div>`;
@@ -945,15 +1095,16 @@ function updateResults() {
     return;
   }
   const c = C(), cc = S.profile.country;
-  const picks = scored.filter(x => !x.l.countries.includes(cc)).sort((a, b) => b.s - a.s).slice(0, 6);
+  const feed = scored.filter(x => ageOk(x.l));
+  const picks = feed.filter(x => !x.l.countries.includes(cc)).sort((a, b) => b.s - a.s).slice(0, 6);
   const local = localLessonsFor(cc), localUp = local.filter(l => l.community).length;
   const tagCount = {}; allLessons().forEach(l => l.tags.forEach(t => tagCount[t] = (tagCount[t] || 0) + (l.countries.includes(S.profile.country) ? 3 : 1)));
   const trending = Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(x => x[0]);
-  const comm = scored.filter(x => x.l.community && !x.l.countries.includes(cc)).sort((a, b) => b.l.createdAt - a.l.createdAt);
-  const rest = [...scored].sort((a, b) => b.s - a.s || a.l.title.localeCompare(b.l.title));
+  const comm = feed.filter(x => x.l.community && !x.l.countries.includes(cc)).sort((a, b) => b.l.createdAt - a.l.createdAt);
+  const rest = [...feed].sort((a, b) => b.s - a.s || a.l.title.localeCompare(b.l.title));
   box.innerHTML = ageNote() + `
     <section><div class="sec-h"><h2>Picked for you</h2><span>Worldwide</span></div>
-      <div class="rail">${picks.map(x => `<button class="board" data-open="${esc(x.l.id)}"><span class="why">${esc(x.why)}</span><h3>${esc(x.l.title)}</h3><p>${esc(x.l.summary)}</p><span class="meta">${esc(x.l.subject)} · ${esc(gradeLabel(x.l.grades))} · ${x.l.duration} min</span></button>`).join("")}</div></section>
+      <div class="rail">${picks.map(x => `<button class="board" data-open="${esc(x.l.id)}"><span class="why">${esc(x.why)}</span><h3>${esc(x.l.title)}</h3><p>${esc(x.l.summary)}</p><span class="meta"><span class="stag on-board">${esc(x.l.subject)}</span> ${esc(gradeLabel(x.l.grades))} · ${x.l.duration} min</span></button>`).join("")}</div></section>
     <section class="local"><div class="sec-h"><h2>From ${esc(c.name)}</h2><button class="link" data-act="more-local">More ${I.chevR}</button></div>
       <p class="local-sub">${localUp ? `${localUp} plan${localUp === 1 ? "" : "s"} uploaded by local teachers` : `Local plans for ${esc(c.curric)} classrooms`}</p>
       ${local.length ? `<div class="minis">${local.slice(0, 3).map(miniHTML).join("")}</div>` : `<p class="local-sub" style="margin-top:8px">No plans from ${esc(c.name)} yet. <button class="link" data-act="upload">Share the first one</button></p>`}
@@ -1045,7 +1196,7 @@ function openLesson(id) {
       ${l.objectives.length ? `<div class="d-sec"><h3>Learning objectives</h3><ul class="ticks">${l.objectives.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>` : ""}
       ${l.materials.length ? `<div class="d-sec"><h3>Materials</h3><ul class="ticks">${l.materials.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>` : ""}
       ${l.steps.length ? `<div class="d-sec"><h3>Lesson flow</h3><ol class="steps">${l.steps.map(s => `<li><span>${esc(s.t)}</span><span class="m">${s.min ? s.min + " min" : ""}</span></li>`).join("")}</ol></div>` : ""}
-      ${l.tags.length ? `<div class="d-sec"><h3>Hashtags</h3><div class="tags">${l.tags.map(t => `<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join("")}</div></div>` : ""}
+      <div class="d-sec"><h3>Subject and hashtags</h3><div class="tags"><button class="stag" data-tag="${esc(subjSlug(l.subject))}" style="--h:${hue(l.subject)}">${esc(l.subject)}</button>${l.tags.map(t => `<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join("")}</div></div>
       <div class="by">${l.community ? `<span class="av" style="width:34px;height:34px">${esc((l.author || "?")[0].toUpperCase())}</span><span>Shared by <b>@${esc(l.author)}</b>${l.countries[0] ? " · " + esc(COUNTRIES[l.countries[0]].name) : ""}</span>` : `<span class="av" style="width:34px;height:34px">C</span><span><b>Chalkline Library</b> · adapt freely to your class and ${esc(c.curric)} requirements</span>`}</div>
       ${isMine(l) ? `<button class="btn danger block" style="margin-top:16px" data-del="${esc(l.id)}">${I.trash}Remove my lesson</button>` : (l.community && isOwner && !l.local ? `<button class="btn danger block" style="margin-top:16px" data-del="${esc(l.id)}">${I.trash}Remove from public listings</button>` : "")}
     </div>
