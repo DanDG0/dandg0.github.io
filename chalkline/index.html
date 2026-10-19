@@ -245,6 +245,14 @@ textarea.inp{min-height:96px;resize:vertical;line-height:1.45}
 .tabs.five .tab{font-size:11px}
 .stag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff;background:hsl(var(--h,150) 50% 38%)}
 .stag.on-board{background:rgba(255,255,255,.16);color:var(--on-board);padding:2px 8px;margin-right:4px}
+.gfilter{display:flex;align-items:center;gap:10px;margin-top:12px}
+.gfilter label{font-size:13px;font-weight:700}
+.gfilter .inp{width:auto;flex:1;max-width:220px;padding:8px 10px;font-size:15px}
+.pager{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px}
+.pager span{font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.pager .iconbtn{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.pager .iconbtn.next{background:var(--board);border-color:var(--board);color:var(--on-board)}
+.pager .iconbtn:disabled{opacity:.35;cursor:default}
 .gtag{align-self:flex-start;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--paper);border:1px solid var(--line);color:var(--muted);font-variant-numeric:tabular-nums}
 .gtag.on{background:var(--marker);border-color:transparent;color:var(--ink)}
 .chip.locked{cursor:default;background:var(--ink);color:var(--paper);border-color:var(--ink);opacity:.85}
@@ -832,6 +840,13 @@ const VIDEOS = {
   "spaghetti-bridge": ["hwNrBeE71Tk", "Spaghetti Bridge! Students design a bridge with spaghetti"],
   "portrait-proportions": ["1kHzAh9sCH4", "How to Draw Facial Proportions"],
 };
+// Every lesson is pitched at one precise grade.
+const ONE_GRADE = { "quadratics-desmos": 11, "clinometer-trig": 10, "dice-probability": 8, "tpcastt-poetry": 12, "argumentative-essay": 11, "romeo-juliet-act1": 9,
+  "acid-base-titration": 12, "strawberry-dna": 10, "egg-drop": 8, "first-cv": 12, "budget-first-salary": 11, "mapwork-cross-sections": 12, "soweto-1976": 12,
+  "wwi-causes": 9, "python-guessing-game": 10, "series-parallel-circuits": 9, "spaghetti-bridge": 8, "portrait-proportions": 10, "one-point-perspective": 11,
+  "zentangle": 8, "homework-debate": 8, "found-poetry": 7, "ndebele-patterns": 6, "pinch-pots": 5 };
+const oneGrade = g => [Math.floor((g[0] + g[1]) / 2), Math.floor((g[0] + g[1]) / 2)];
+LIBRARY.forEach(l => { l.grades = ONE_GRADE[l.id] !== undefined ? [ONE_GRADE[l.id], ONE_GRADE[l.id]] : oneGrade(l.grades); });
 LIBRARY.forEach(l => { const v = VIDEOS[l.id]; l.videoUrl = v ? "https://www.youtube.com/watch?v=" + v[0] : ""; l.videoTitle = v ? v[1] : ""; delete l.video; });
 // A demo link must point at one video, not a search page or channel.
 function isSpecificVideo(u) {
@@ -851,7 +866,13 @@ let S = blank();
 let mode = "local";             // "cloud" when saved to the viewer's account
 let db = null, userCap = null, uid = null, isOwner = false;
 let community = [], myRemote = [], communityStatus = "off";
-const ui = { tab: "lessons", q: "", subject: "All", calMonth: null, calSel: null, allAges: false, themeBrowse: false, tq: "", mq: "", mrCat: "All" };
+const PAGE_SIZE = 15;
+function pageOf(key, list) {
+  const n = Math.max(1, Math.ceil(list.length / PAGE_SIZE)), p = Math.min(Math.max(1, ui.pages[key] || 1), n); ui.pages[key] = p;
+  const nav = n > 1 ? `<nav class="pager" aria-label="Pages"><button class="iconbtn" data-pg="${key}" data-dir="-1" ${p === 1 ? "disabled" : ""} aria-label="Previous page">${I.chevL}</button><span>Page ${p} of ${n}</span><button class="iconbtn next" data-pg="${key}" data-dir="1" ${p === n ? "disabled" : ""} aria-label="Next page">${I.chevR}</button></nav>` : "";
+  return { items: list.slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE), nav };
+}
+const ui = { pages: {}, grade: "", tab: "lessons", q: "", subject: "All", calMonth: null, calSel: null, allAges: false, themeBrowse: false, tq: "", mq: "", mrCat: "All" };
 const hostTheme = document.documentElement.getAttribute("data-theme");
 
 function lsRead() { try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
@@ -861,7 +882,7 @@ function hydrate(o) {
   if (!o || typeof o !== "object") return b;
   const p = o.profile && typeof o.profile === "object" && o.profile.username ? o.profile : null;
   return {
-    profile: p ? { username: String(p.username), displayName: String(p.displayName || p.username), avatar: typeof p.avatar === "string" && p.avatar.startsWith("data:image/") ? p.avatar : "", country: COUNTRIES[p.country] ? p.country : "US", phase: ["primary", "mid", "high"].includes(p.phase) ? p.phase : "mid", grade: Number.isInteger(p.grade) && p.grade >= 0 && p.grade <= UNDER10_MAX ? p.grade : 1, subjects: Array.isArray(p.subjects) ? [...new Set(p.subjects.map(s => s === "Arts" ? "Art" : s).filter(s => SUBJ[s]))] : [], usernameChanges: +p.usernameChanges || 0, paidChanges: +p.paidChanges || 0, joined: p.joined || isoDate(new Date()) } : null,
+    profile: p ? { username: String(p.username), displayName: String(p.displayName || p.username), avatar: typeof p.avatar === "string" && p.avatar.startsWith("data:image/") ? p.avatar : "", country: COUNTRIES[p.country] ? p.country : "US", phase: ["primary", "mid", "high"].includes(p.phase) ? p.phase : "mid", grade: Number.isInteger(p.grade) && p.grade >= 0 && p.grade <= 12 ? p.grade : 1, subjects: Array.isArray(p.subjects) ? [...new Set(p.subjects.map(s => s === "Arts" ? "Art" : s).filter(s => SUBJ[s]))] : [], usernameChanges: +p.usernameChanges || 0, paidChanges: +p.paidChanges || 0, joined: p.joined || isoDate(new Date()) } : null,
     saves: Array.isArray(o.saves) ? o.saves.filter(x => typeof x === "string") : [],
     calendar: Array.isArray(o.calendar) ? o.calendar.filter(e => e && typeof e.lessonId === "string" && /^\d{4}-\d{2}-\d{2}$/.test(e.date)) : [],
     settings: { theme: ["light", "dark", "system"].includes(o.settings?.theme) ? o.settings.theme : "system" },
@@ -894,7 +915,7 @@ function normalize(it, owner, local) {
   if (!it || typeof it !== "object") return null;
   const title = str(it.title, 120); if (!title) return null;
   let g = Array.isArray(it.grades) ? it.grades.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= 12) : [];
-  if (g.length !== 2) g = [0, 12]; if (g[0] > g[1]) g = [g[1], g[0]];
+  if (g.length === 1) g = [g[0], g[0]]; if (g.length !== 2) g = [3, 3]; if (g[0] > g[1]) g = [g[1], g[0]]; g = oneGrade(g);
   const cc = COUNTRIES[it.country] ? it.country : null;
   const v0 = safeUrl(it.video), v = v0 && isSpecificVideo(v0) ? v0 : "";
   return {
@@ -936,18 +957,19 @@ function rangeText(r, sys) {
 }
 const phaseHelp = (ph, cc) => ph === "primary" ? `All subjects, for children under 10 (${rangeText([0, UNDER10_MAX], COUNTRIES[cc].grade)}). Unlocks the Themes and Morning routine tabs.` : `${phaseName(ph, cc)}: ${rangeText(phaseRange(ph, cc), COUNTRIES[cc].grade)}. Pick the subjects you teach below.`;
 const gradeTag = (g, sys) => g[0] === g[1] ? gradeOne(g[0], sys) : rangeText(g, sys);
-const myGrade = () => S.profile?.phase === "primary" ? S.profile.grade : null;
+const myGrade = () => { const p = S.profile; if (!p) return null; const r = phaseRange(p.phase, p.country); return p.grade >= r[0] && p.grade <= r[1] ? p.grade : null; };
 const forMyGrade = g => myGrade() !== null && g[0] <= myGrade() && g[1] >= myGrade();
-function gradePicker(sel, sys) { return Array.from({ length: UNDER10_MAX + 1 }, (_, i) => `<button type="button" class="chip" data-gr="${i}" aria-pressed="${i === sel}">${esc(gradeOne(i, sys))}</button>`).join(""); }
+function gradePicker(sel, sys, r = [0, UNDER10_MAX]) { return Array.from({ length: r[1] - r[0] + 1 }, (_, k) => r[0] + k).map(i => `<button type="button" class="chip" data-gr="${i}" aria-pressed="${i === sel}">${esc(gradeOne(i, sys))}</button>`).join(""); }
+const clampGrade = (g, r) => g >= r[0] && g <= r[1] ? g : r[0];
 const ageFiltered = () => !ui.allAges;
 // Primary: any overlap with the under-10 range. Intermediate/high school: the lesson must also start no more than 1 grade below the stage.
-const inPhase = l => { const r = phaseRange(S.profile.phase, S.profile.country); const overlap = l.grades[0] <= r[1] && l.grades[1] >= r[0]; return S.profile.phase === "primary" ? overlap : overlap && l.grades[0] >= r[0] - 1; };
+const inPhase = l => { const r = phaseRange(S.profile.phase, S.profile.country); const overlap = l.grades[0] <= r[1] && l.grades[1] >= r[0]; return S.profile.phase === "primary" ? overlap : overlap && l.grades[0] >= r[0]; };
 const ageOk = l => !ageFiltered() || inPhase(l);
 const under10Range = sys => rangeText([0, UNDER10_MAX], sys);
 // Main feed relevance is worldwide: phase/subjects and how universal a plan is. Country only drives the local block.
 function score(l) {
   const p = S.profile; let s = 0, why = "";
-  if (forMyGrade(l.grades)) { s += 5; why = "Made for " + gradeOne(p.grade, C().grade); }
+  if (forMyGrade(l.grades)) { s += 10; why = "Made for " + gradeOne(p.grade, C().grade); }
   if (inPhase(l)) { s += 3; why = why || (p.phase === "primary" ? "Great for under-10s" : "Right for " + phaseName(p.phase, p.country)); }
   if (p.phase !== "primary" && p.subjects.includes(l.subject)) { s += 8; why = "Your subject: " + l.subject; }
   if (!l.countries.length) { s += 1.5; why = why || "Works in any classroom"; } else s -= 1;
@@ -961,7 +983,8 @@ function localLessonsFor(cc) {
 }
 function ageNote() {
   const p = S.profile, nm = p.phase === "primary" ? "under-10s" : phaseName(p.phase, p.country);
-  const first = p.phase === "primary" ? `, ${esc(gradeOne(p.grade, C().grade))} first` : (p.subjects.length ? `, ${esc(p.subjects.join(", "))} first` : "");
+  const firsts = [myGrade() !== null ? gradeOne(p.grade, C().grade) : "", p.phase !== "primary" ? p.subjects.join(", ") : ""].filter(Boolean).join(" & ");
+  const first = firsts ? `, ${esc(firsts)} first` : "";
   return ui.allAges ? `<p class="hint">Showing all ages${first} · <button class="link" data-act="ages">Back to ${esc(nm)}</button></p>`
     : `<p class="hint">Showing plans for ${esc(nm)} (${esc(rangeText(phaseRange(p.phase, p.country), C().grade))})${first} · <button class="link" data-act="ages">Show all ages</button></p>`;
 }
@@ -975,7 +998,7 @@ function openLocal() {
       <h1 class="d-title" style="margin-top:0">${esc(c.name)}</h1>
       <p class="d-sum">${up.length ? `${up.length} uploaded by teachers in ${esc(c.name)}` : `No teacher uploads from ${esc(c.name)} yet`}${list.length - up.length ? ` · ${list.length - up.length} from the Chalkline Library` : ""}</p>
       ${ageNote()}
-      ${list.length ? `<div class="list" style="margin-top:16px">${list.map(cardHTML).join("")}</div>` : ""}
+      ${list.length ? `<div class="list" style="margin-top:16px">${pageOf("local", list).items.map(cardHTML).join("")}</div>${pageOf("local", list).nav}` : ""}
       <div class="empty" style="padding:26px 10px"><p>Teach in ${esc(c.name)}? Share a plan and it appears here for other local teachers.</p><button class="btn chalk" data-act="upload">Share a lesson</button></div>
     </div>`;
   });
@@ -1071,25 +1094,28 @@ function renderLessons() {
   $("#view").innerHTML = `
     <label class="search" for="q">${I.search}<input id="q" type="search" autocomplete="off" placeholder="Search #fractions or keywords" value="${esc(ui.q)}"><button class="iconbtn" id="q-clear" aria-label="Clear search" ${ui.q ? "" : "hidden"}>${I.x}</button></label>
     <p class="hint">Combine <b>#hashtags</b> and words, e.g. <b>#money change</b></p>
+    <div class="gfilter"><label for="gsel">Grade</label><select class="inp" id="gsel"><option value="">All grades</option>${Array.from({ length: 13 }, (_, i) => `<option value="${i}" ${ui.grade === String(i) ? "selected" : ""}>${esc(gradeOne(i, C().grade))}</option>`).join("")}</select></div>
     <div class="chips" role="group" aria-label="Subjects">${subj.map(s => `<button class="chip" data-subj="${esc(s)}" aria-pressed="${ui.subject === s}">${s !== "All" ? `<i class="dot" style="--h:${hue(s)}"></i>` : ""}${esc(s)}</button>`).join("")}</div>
     <div id="results"></div>`;
   const q = $("#q");
-  q.addEventListener("input", () => { ui.q = q.value; $("#q-clear").hidden = !q.value; updateResults(); });
+  q.addEventListener("input", () => { ui.q = q.value; $("#q-clear").hidden = !q.value; ui.pages.search = 1; updateResults(); });
+  $("#gsel").addEventListener("change", e => { ui.grade = e.target.value; ui.pages.search = ui.pages.feed = 1; updateResults(); });
   $("#q-clear").addEventListener("click", e => { e.preventDefault(); ui.q = ""; q.value = ""; $("#q-clear").hidden = true; updateResults(); q.focus(); });
   updateResults();
 }
 function updateResults() {
   const box = $("#results"); if (!box) return;
   const pq = parseQuery(ui.q);
-  let list = allLessons().filter(l => ui.subject === "All" || l.subject === ui.subject).filter(l => matches(l, pq));
+  let list = allLessons().filter(l => ui.subject === "All" || l.subject === ui.subject).filter(l => matches(l, pq)).filter(l => ui.grade === "" || l.grades[0] === +ui.grade);
   const scored = list.map(l => ({ l, ...score(l) }));
-  const searching = ui.q.trim() || ui.subject !== "All";
+  const searching = ui.q.trim() || ui.subject !== "All" || ui.grade !== "";
   if (searching) {
     const words = pq.words;
     scored.forEach(x => { if (words.some(w => x.l.title.toLowerCase().includes(w))) x.s += 4; });
     scored.sort((a, b) => b.s - a.s);
-    box.innerHTML = `<section><div class="sec-h"><h2>${scored.length ? `${scored.length} lesson${scored.length === 1 ? "" : "s"}` : "No matches"}</h2><span>${esc(ui.subject === "All" ? "All subjects" : ui.subject)}</span></div>
-      ${scored.length ? `<div class="list">${scored.map(x => cardHTML(x.l)).join("")}</div>` :
+    const pg = pageOf("search", scored);
+    box.innerHTML = `<section id="pg-search"><div class="sec-h"><h2>${scored.length ? `${scored.length} lesson${scored.length === 1 ? "" : "s"}` : "No matches"}</h2><span>${esc([ui.subject === "All" ? "All subjects" : ui.subject, ui.grade !== "" ? gradeOne(+ui.grade, C().grade) : ""].filter(Boolean).join(" · "))}</span></div>
+      ${scored.length ? `<div class="list">${pg.items.map(x => cardHTML(x.l)).join("")}</div>${pg.nav}` :
         `<div class="empty"><div class="glyph">${I.search}</div><h3>Nothing found for “${esc(ui.q.trim() || ui.subject)}”</h3><p>Try fewer words, a broader hashtag, or share your own lesson for others to find.</p><button class="btn chalk" data-act="upload">Share a lesson</button></div>`}</section>`;
     return;
   }
@@ -1110,7 +1136,7 @@ function updateResults() {
     </section>
     <section><div class="sec-h"><h2>Trending hashtags</h2></div><div class="tags">${trending.map(t => `<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join("")}</div></section>
     ${comm.length ? `<section><div class="sec-h"><h2>From teachers</h2><span>${comm.length} shared</span></div><div class="list">${comm.slice(0, 4).map(x => cardHTML(x.l)).join("")}</div></section>` : ""}
-    <section><div class="sec-h"><h2>All lessons</h2><span>${rest.length}</span></div><div class="list">${rest.map(x => cardHTML(x.l)).join("")}</div></section>`;
+    <section id="pg-feed"><div class="sec-h"><h2>All lessons</h2><span>${rest.length}</span></div><div class="list">${pageOf("feed", rest).items.map(x => cardHTML(x.l)).join("")}</div>${pageOf("feed", rest).nav}</section>`;
 }
 
 /* Calendar tab */
@@ -1153,7 +1179,7 @@ function evHTML(e, withDate) {
 function renderSaves() {
   const list = S.saves.map(getLesson).filter(Boolean);
   $("#view").innerHTML = list.length ? `
-    <section style="margin-top:8px"><div class="sec-h"><h2>Saved lessons</h2><span>${list.length}</span></div><div class="list">${list.map(cardHTML).join("")}</div></section>` :
+    <section id="pg-saves" style="margin-top:8px"><div class="sec-h"><h2>Saved lessons</h2><span>${list.length}</span></div><div class="list">${pageOf("saves", list).items.map(cardHTML).join("")}</div>${pageOf("saves", list).nav}</section>` :
     `<div class="empty" style="margin-top:30px"><div class="glyph">${I.bm}</div><h3>No saved lessons yet</h3><p>Tap the bookmark on any lesson to keep it here for later.</p><button class="btn primary" data-tab-go="lessons">Browse lessons</button></div>`;
 }
 
@@ -1287,7 +1313,7 @@ function openUpload() {
         <div class="field"><label for="u-sum">Short description</label><input class="inp" id="u-sum" maxlength="220" placeholder="One line that tells teachers what learners do" required></div>
         <div class="row2"><div class="field"><label for="u-subj">Subject</label><select class="inp" id="u-subj">${SUBJECTS.map(s => `<option ${S.profile.subjects[0] === s.k ? "selected" : ""}>${esc(s.k)}</option>`).join("")}</select></div>
         <div class="field"><label for="u-dur">Duration (min)</label><input class="inp" id="u-dur" type="number" min="5" max="240" value="45" inputmode="numeric"></div></div>
-        <div class="row2"><div class="field"><label for="u-g1">From</label><select class="inp" id="u-g1">${gopts(phaseRange(S.profile.phase, S.profile.country)[0])}</select></div><div class="field"><label for="u-g2">To</label><select class="inp" id="u-g2">${gopts(Math.min(12, phaseRange(S.profile.phase, S.profile.country)[0] + 2))}</select></div></div>
+        <div class="field"><label for="u-grade">Grade</label><select class="inp" id="u-grade">${gopts(S.profile.grade)}</select><span class="help">Pick the one grade this lesson is written for.</span></div>
         <div class="field"><label for="u-desc">Full description</label><textarea class="inp" id="u-desc" maxlength="4000" placeholder="How does the lesson work? What makes it engaging?" required></textarea></div>
         <div class="field"><label for="u-obj">Learning objectives</label><textarea class="inp" id="u-obj" placeholder="One per line"></textarea></div>
         <div class="field"><label for="u-mat">Materials</label><textarea class="inp" id="u-mat" placeholder="One per line"></textarea></div>
@@ -1311,7 +1337,7 @@ function openUpload() {
       if (vid && !safeUrl(vid)) { err.hidden = false; err.textContent = "The video link must start with https://"; return; }
       if (vid && !isSpecificVideo(vid)) { err.hidden = false; err.textContent = "Link to one specific video (e.g. youtube.com/watch?v=…), not a search page or channel."; return; }
       err.hidden = true;
-      let g1 = +v("#u-g1"), g2 = +v("#u-g2"); if (g1 > g2) [g1, g2] = [g2, g1];
+      const g1 = +v("#u-grade"), g2 = g1;
       const item = { id: uidLocal("x"), title: v("#u-title"), summary: v("#u-sum"), subject: v("#u-subj"), grades: [g1, g2], duration: +v("#u-dur") || 45,
         description: v("#u-desc"), objectives: lines("#u-obj"), materials: lines("#u-mat"), steps: lines("#u-steps"), tags: parseTags(),
         video: safeUrl(vid), costUSD: Math.round(((+v("#u-cost") || 0) / c.rate) * 100) / 100, author: S.profile.username, authorName: S.profile.displayName,
@@ -1343,7 +1369,7 @@ function openProfile() {
         <button class="gi" data-act="name"><span class="k">Display name</span><span class="v">${esc(p.displayName)}</span></button>
         <button class="gi" data-act="username"><span class="k">Username<small>${left ? `${left} free change${left === 1 ? "" : "s"} left` : `Changes cost ${esc(money(USERNAME_FEE_USD, p.country))}`}</small></span><span class="v">@${esc(p.username)}</span></button>
         <button class="gi" data-act="country"><span class="k">Country<small>Sets currency, grade names and your suggested feed</small></span><span class="v">${esc(c.name)} · ${esc(c.cur)}</span></button>
-        <button class="gi" data-act="phase"><span class="k">What I teach<small>${esc(rangeText(phaseRange(p.phase, p.country), c.grade))}</small></span><span class="v">${esc(phaseName(p.phase, p.country))}${p.phase === "primary" ? " · " + esc(gradeOne(p.grade, c.grade)) : ""}</span></button>
+        <button class="gi" data-act="phase"><span class="k">What I teach<small>${esc(rangeText(phaseRange(p.phase, p.country), c.grade))}</small></span><span class="v">${esc(phaseName(p.phase, p.country))} · ${esc(gradeOne(p.grade, c.grade))}</span></button>
         <button class="gi" data-act="subjects"><span class="k">Subject tags<small>Boosts these subjects in your feed. Search always covers everything.</small></span><span class="v">${p.phase === "primary" ? "All subjects" : esc(p.subjects.join(", ") || "Add subjects")}</span></button>
       </div>
       <p class="grp-h">Appearance</p>
@@ -1417,9 +1443,9 @@ function phaseSheet() {
   openSheet(`<h2>What do you teach?</h2><p class="lead">This shapes the lessons suggested in your feed.</p>
     <div class="seg" role="group" aria-label="Teaching stage" style="margin-top:14px">${["primary", "mid", "high"].map(k => `<button data-ph="${k}" aria-pressed="${ph === k}">${esc(phaseName(k, cc))}</button>`).join("")}</div>
     <p class="note" id="ph-help" style="margin-top:10px"></p>
-    <div class="field" id="ph-gr" style="margin-top:14px"><span class="lab">Which grade do you teach?</span><div class="pick">${gradePicker(gr, COUNTRIES[cc].grade)}</div><span class="help">Lessons and warm-ups for this grade show first.</span></div>
+    <div class="field" id="ph-gr" style="margin-top:14px"><span class="lab">Which grade do you teach?</span><div class="pick" id="ph-gr-pick"></div><span class="help">Lessons and warm-ups for this grade show first.</span></div>
     <button class="btn primary block" style="margin-top:16px" data-ok>Save</button>`, sh => {
-    const help = () => { $("#ph-help", sh).textContent = phaseHelp(ph, cc); $("#ph-gr", sh).hidden = ph !== "primary"; };
+    const help = () => { $("#ph-help", sh).textContent = phaseHelp(ph, cc); const r = phaseRange(ph, cc); gr = clampGrade(gr, r); $("#ph-gr-pick", sh).innerHTML = gradePicker(gr, COUNTRIES[cc].grade, r); };
     sh.addEventListener("click", e => { const g = e.target.closest("[data-gr]"); if (g) { gr = +g.dataset.gr; $$("[data-gr]", sh).forEach(x => x.setAttribute("aria-pressed", +x.dataset.gr === gr)); } });
     help();
     sh.addEventListener("click", e => { const b = e.target.closest("[data-ph]"); if (b) { ph = b.dataset.ph; $$("[data-ph]", sh).forEach(x => x.setAttribute("aria-pressed", x.dataset.ph === ph)); help(); } });
@@ -1489,7 +1515,7 @@ function showOnboarding() {
     const cc = $("#o-country").value;
     $("#o-seg").innerHTML = ["primary", "mid", "high"].map(k => `<button type="button" data-ph="${k}" aria-pressed="${phase === k}">${esc(phaseName(k, cc))}</button>`).join("");
     $("#o-ph-help").textContent = phaseHelp(phase, cc);
-    $("#o-gr").hidden = phase !== "primary"; $("#o-gr-pick").innerHTML = gradePicker(grade, COUNTRIES[cc].grade);
+    const gr = phaseRange(phase, cc); grade = clampGrade(grade, gr); $("#o-gr-pick").innerHTML = gradePicker(grade, COUNTRIES[cc].grade, gr);
     const prim = phase === "primary";
     $("#o-subj-lab").textContent = prim ? "Subjects (all included for Primary)" : "Subjects you teach";
     $$("#o-subj [data-pk]").forEach(b => { b.disabled = prim; b.classList.toggle("locked", prim); b.setAttribute("aria-pressed", prim || picked.has(b.dataset.pk)); });
@@ -1986,12 +2012,14 @@ const MORNING = [
     description: "Strong, warmed-up fingers make handwriting easier. Do finger taps, pencil walks, squeezes and ‘spider push-ups’ before the first writing task of the day.",
     steps: ["Shake hands loose", "Tap each finger to the thumb, then back", "Walk fingers up and down a pencil", "Spider push-ups: fingertips together, press and release", "Squeeze a small ball or playdough 10 times"], tags: ["handwriting", "finemotor", "writing"], video: ["Z2aGCrnumdQ", "Finger Gym Warm Ups for Writing with Pencil"] }),
 ];
+const MR_GRADE = { "floor-is-lava": 3, "twist-and-shake": 2, "got-that-rhythm": 3, "slip-and-slide": 4, "rainbow-breathing": 4, "cross-crawl": 3, "greeting-circle": 2, "simon-says": 2 };
+MORNING.forEach(r => { r.grades = MR_GRADE[r.id] !== undefined ? [MR_GRADE[r.id], MR_GRADE[r.id]] : oneGrade(r.grades); });
 function normRoutine(it, owner, local) {
   if (!it || typeof it !== "object") return null;
   const title = str(it.title, 80); if (!title) return null;
   const v0 = safeUrl(it.video), v = v0 && isSpecificVideo(v0) ? v0 : "";
   return { id: (local ? "lr:" : "cr:") + owner + ":" + str(it.id, 40), rawId: str(it.id, 40), owner, local: !!local, community: true, title, cat: MR_CAT[it.cat] ? it.cat : "Movement",
-    grades: (() => { let g = Array.isArray(it.grades) ? it.grades.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= UNDER10_MAX) : []; if (g.length !== 2) g = [0, UNDER10_MAX]; return g[0] > g[1] ? [g[1], g[0]] : g; })(),
+    grades: (() => { let g = Array.isArray(it.grades) ? it.grades.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= UNDER10_MAX) : []; if (g.length === 1) g = [g[0], g[0]]; if (g.length !== 2) g = [1, 1]; return oneGrade(g[0] > g[1] ? [g[1], g[0]] : g); })(),
     minutes: Math.min(30, Math.max(1, Math.round(+it.minutes) || 5)), summary: str(it.summary, 200), description: str(it.description, 2000), steps: arr(it.steps, 15, 300),
     tags: arr(it.tags, 10, 30).map(cleanTag).filter(Boolean), videoUrl: v, videoTitle: "", author: str(it.author, 30) || "teacher", country: COUNTRIES[it.country] ? it.country : null, createdAt: +it.createdAt || 0 };
 }
@@ -2022,7 +2050,7 @@ function renderMorning() {
     <label class="search" for="mq" style="margin-top:16px">${I.search}<input id="mq" type="search" autocomplete="off" placeholder="Search: breathing, #counting, dance…" value="${esc(ui.mq || "")}"></label>
     <div class="chips" role="group" aria-label="Activity types">${cats.map(c => `<button class="chip" data-mr-cat="${esc(c)}" aria-pressed="${(ui.mrCat || "All") === c}">${c !== "All" ? `<i class="dot" style="--h:${mrHue(c)}"></i>` : ""}${esc(c)}</button>`).join("")}</div>
     <div id="mr-results"></div>`;
-  $("#mq").addEventListener("input", e => { ui.mq = e.target.value; mrResults(); });
+  $("#mq").addEventListener("input", e => { ui.mq = e.target.value; ui.pages.mr = 1; mrResults(); });
   mrMine(); mrResults();
 }
 function mrMine() {
@@ -2037,8 +2065,8 @@ function mrResults() {
   const pq = parseQuery(ui.mq || ""), cat = ui.mrCat || "All";
   const list = allRoutines().filter(r => cat === "All" || r.cat === cat).filter(r => mrMatches(r, pq))
     .sort((a, b) => (forMyGrade(b.grades) - forMyGrade(a.grades)) || (b.community - a.community) || (b.createdAt - a.createdAt));
-  box.innerHTML = `<section><div class="sec-h"><h2>${list.length ? `${list.length} activit${list.length === 1 ? "y" : "ies"}` : "No matches"}</h2><span>${esc(cat === "All" ? "All types" : cat)}</span></div>
-    ${list.length ? `<div class="list">${list.map(mrCardHTML).join("")}</div>` : `<div class="empty"><div class="glyph">${I.search}</div><h3>Nothing found</h3><p>Try another word, or share your own warm-up for other teachers.</p><button class="btn chalk" data-act="mr-create">Share an activity</button></div>`}</section>`;
+  box.innerHTML = `<section id="pg-mr"><div class="sec-h"><h2>${list.length ? `${list.length} activit${list.length === 1 ? "y" : "ies"}` : "No matches"}</h2><span>${esc(cat === "All" ? "All types" : cat)}</span></div>
+    ${list.length ? `<div class="list">${pageOf("mr", list).items.map(mrCardHTML).join("")}</div>${pageOf("mr", list).nav}` : `<div class="empty"><div class="glyph">${I.search}</div><h3>Nothing found</h3><p>Try another word, or share your own warm-up for other teachers.</p><button class="btn chalk" data-act="mr-create">Share an activity</button></div>`}</section>`;
 }
 function toggleRoutine(id) {
   const i = S.routine.indexOf(id);
@@ -2079,8 +2107,7 @@ function openRoutineCreate() {
         <div class="field"><label for="m-sum">Short description</label><input class="inp" id="m-sum" maxlength="200" placeholder="One line about what learners do" required></div>
         <div class="row2"><div class="field"><label for="m-cat">Type</label><select class="inp" id="m-cat">${MR_CATS.map(c => `<option>${esc(c.k)}</option>`).join("")}</select></div>
         <div class="field"><label for="m-min">Minutes</label><input class="inp" id="m-min" type="number" min="1" max="30" value="5" inputmode="numeric"></div></div>
-        <div class="row2"><div class="field"><label for="m-g1">For grades from</label><select class="inp" id="m-g1">${Array.from({ length: UNDER10_MAX + 1 }, (_, i) => `<option value="${i}" ${i === S.profile.grade ? "selected" : ""}>${esc(gradeOne(i, C().grade))}</option>`).join("")}</select></div>
-        <div class="field"><label for="m-g2">To</label><select class="inp" id="m-g2">${Array.from({ length: UNDER10_MAX + 1 }, (_, i) => `<option value="${i}" ${i === S.profile.grade ? "selected" : ""}>${esc(gradeOne(i, C().grade))}</option>`).join("")}</select></div></div>
+        <div class="field"><label for="m-grade">Grade</label><select class="inp" id="m-grade">${Array.from({ length: UNDER10_MAX + 1 }, (_, i) => `<option value="${i}" ${i === S.profile.grade ? "selected" : ""}>${esc(gradeOne(i, C().grade))}</option>`).join("")}</select></div>
         <div class="field"><label for="m-desc">How it works</label><textarea class="inp" id="m-desc" maxlength="2000" placeholder="Explain the activity and why it helps"></textarea></div>
         <div class="field"><label for="m-steps">Steps</label><textarea class="inp" id="m-steps" placeholder="One step per line, in order"></textarea></div>
         <div class="field"><label for="m-tags">Hashtags</label><input class="inp" id="m-tags" placeholder="#counting #movement"></div>
@@ -2094,7 +2121,7 @@ function openRoutineCreate() {
       if (!v("#m-title") || !v("#m-sum")) { err.hidden = false; err.textContent = "Add a name and a short description."; return; }
       if (vid && (!safeUrl(vid) || !isSpecificVideo(vid))) { err.hidden = false; err.textContent = "Link to one specific video (e.g. youtube.com/watch?v=…), not a search page or channel."; return; }
       err.hidden = true;
-      const item = { id: uidLocal("r"), title: v("#m-title"), summary: v("#m-sum"), cat: v("#m-cat"), minutes: +v("#m-min") || 5, grades: [Math.min(+v("#m-g1"), +v("#m-g2")), Math.max(+v("#m-g1"), +v("#m-g2"))], description: v("#m-desc"),
+      const item = { id: uidLocal("r"), title: v("#m-title"), summary: v("#m-sum"), cat: v("#m-cat"), minutes: +v("#m-min") || 5, grades: [+v("#m-grade"), +v("#m-grade")], description: v("#m-desc"),
         steps: v("#m-steps").split("\n").map(s => s.trim()).filter(Boolean), tags: [...new Set(v("#m-tags").split(/[\s,]+/).map(cleanTag).filter(Boolean))].slice(0, 10),
         video: safeUrl(vid), author: S.profile.username, country: S.profile.country, createdAt: Date.now() };
       const btn = $("#m-go", el); btn.disabled = true; btn.textContent = "Publishing…";
@@ -2115,7 +2142,7 @@ document.addEventListener("click", e => {
   if (d.themePick) return pickTheme(d.themePick);
   if (d.mrAdd) { e.stopPropagation(); return toggleRoutine(d.mrAdd); }
   if (d.mr) return openRoutine(d.mr);
-  if (d.mrCat) { ui.mrCat = d.mrCat; $$("[data-mr-cat]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mrCat === ui.mrCat)); return mrResults(); }
+  if (d.mrCat) { ui.pages.mr = 1; ui.mrCat = d.mrCat; $$("[data-mr-cat]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mrCat === ui.mrCat)); return mrResults(); }
   if (d.mrTag) { while (screens.length) popScreen(); ui.mq = "#" + d.mrTag; ui.mrCat = "All"; return setTab("morning"); }
   if (d.mrDel) { const r = getRoutine(d.mrDel); if (!r) return; return confirmSheet("Remove this activity?", "It will disappear from Morning routine for everyone.", "Remove", async () => { try { await removeItem("routines", r); S.routine = S.routine.filter(x => x !== r.id); persist(); toast("Activity removed"); popScreen(); rerender(); } catch (er) { toast("Couldn’t remove it. Try again in a moment."); } }); }
   if (d.thDel) { const th = getTheme(d.thDel); if (!th) return; return confirmSheet("Remove this theme?", "It will disappear for every teacher using it.", "Remove", async () => { try { await removeItem("themes", th); communityThemes = communityThemes.filter(x => x.id !== th.id); S.themeSel = null; persist(); toast("Theme removed"); renderThemes(); } catch (er) { toast("Couldn’t remove it. Try again in a moment."); } }); }
@@ -2123,8 +2150,15 @@ document.addEventListener("click", e => {
   if (d.thDl) return downloadThemeItem(d.thDl, t);
   if (d.open) return openLesson(d.open);
   if (d.addcal) return addToCalendarSheet(d.addcal);
-  if (d.tag) { while (screens.length) popScreen(); ui.q = "#" + d.tag; ui.subject = "All"; return setTab("lessons"); }
-  if (d.subj) { ui.subject = d.subj; $$("[data-subj]").forEach(b => b.setAttribute("aria-pressed", b.dataset.subj === ui.subject)); return updateResults(); }
+  if (d.tag) { while (screens.length) popScreen(); ui.q = "#" + d.tag; ui.subject = "All"; ui.grade = ""; ui.pages.search = 1; return setTab("lessons"); }
+  if (d.pg) {
+    ui.pages[d.pg] = (ui.pages[d.pg] || 1) + (+d.dir || 0);
+    if (d.pg === "local") { const top = screens[screens.length - 1]; if (top) { top.build(top.el, top); const b = top.el.querySelector(".scr-body"); if (b) b.scrollTop = 0; } return; }
+    if (d.pg === "mr") mrResults(); else if (d.pg === "saves") renderSaves(); else updateResults();
+    const a = document.getElementById("pg-" + d.pg); if (a) window.scrollTo(0, a.getBoundingClientRect().top + window.scrollY - 70);
+    return;
+  }
+  if (d.subj) { ui.pages.search = ui.pages.feed = 1; ui.subject = d.subj; $$("[data-subj]").forEach(b => b.setAttribute("aria-pressed", b.dataset.subj === ui.subject)); return updateResults(); }
   if ("back" in d) return popScreen();
   if (d.cal) {
     if (d.cal === "today") { const t0 = isoDate(new Date()); ui.calMonth = t0.slice(0, 7); ui.calSel = t0; }
@@ -2141,7 +2175,7 @@ document.addEventListener("click", e => {
   }
   switch (d.act) {
     case "upload": closeSheet(); return openUpload();
-    case "more-local": return openLocal();
+    case "more-local": ui.pages.local = 1; return openLocal();
     case "th-create": return openThemeCreate();
     case "mr-create": return openRoutineCreate();
     case "th-browse": ui.themeBrowse = true; renderThemes(); return window.scrollTo(0, 0);
