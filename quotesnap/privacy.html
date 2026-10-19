@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy · QuoteSnap</title>
+  <meta name="description" content="How QuoteSnap handles your data: your jobs, customers and documents stay in your own browser.">
+  <meta name="theme-color" content="#f6f2ea">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-nav">
+    <a class="brand" href="index.html" style="padding:0"><span class="brand-mark">Q</span><span class="brand-name">QuoteSnap</span></a>
+    <nav class="links" aria-label="Site"><a class="btn btn-primary btn-sm" href="app.html">Open the app</a></nav>
+  </header>
+  <main class="legal">
+    <h1>Privacy</h1>
+    <p class="updated">Last updated: 13 October 2026 · Beta</p>
+    <p class="callout"><b>The short version:</b> during the beta, QuoteSnap has no server and no database. Everything you type (your account, customers, chats you paste, quotes, invoices, team and chat messages) is saved <b>only in your own browser on your own device</b>. We can't see it, and we don't sell or share it.</p>
+
+    <h2>What QuoteSnap stores, and where</h2>
+    <ul>
+      <li><b>Your account:</b> name, the email or phone number you log in with, and a scrambled (hashed) version of your password. Your actual password is never stored.</li>
+      <li><b>Your business work:</b> business details, customers, the text you paste, jobs, quotes, invoices, checklists, to-do lists, reminders, and team members and messages if you use Teams.</li>
+      <li><b>Where:</b> in your browser's local storage on the device you use. It is not uploaded to us or anyone else. If you clear your browser data or lose the device, it is gone, so use <i>Settings → Download backup</i>.</li>
+    </ul>
+
+    <h2>What other services see</h2>
+    <ul>
+      <li><b>Hosting:</b> the website is served by Cloudflare. Like any website host, Cloudflare processes basic technical information (such as your IP address and browser type) to deliver the pages and protect against abuse. See <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener">Cloudflare's privacy policy</a>.</li>
+      <li><b>Fonts:</b> the site's fonts load from Google Fonts, so Google receives your IP address and browser details when the page loads. See <a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a>.</li>
+      <li><b>WhatsApp and email:</b> when you tap <i>Send on WhatsApp</i> or an email link, the message opens in that app and is handled under that app's own terms. QuoteSnap only fills in the text.</li>
+    </ul>
+    <p>We don't use advertising, analytics or tracking cookies.</p>
+
+    <h2>Your rights</h2>
+    <p>Because your data lives on your device, you're in control: you can view and change it in the app, download a copy (<i>Settings → Download backup</i>), and delete it (<i>Settings → Erase everything</i>, or clear your browser data). Depending on where you live (for example under POPIA in South Africa or the GDPR in Europe) you have rights over your personal information; contact us with any question and we'll help.</p>
+
+    <h2>Your customers' information</h2>
+    <p>When you add customer details or paste chats, you are responsible for having a fair reason to use that information for your business (for example, to quote, invoice and contact them about their job).</p>
+
+    <h2>Children</h2>
+    <p>QuoteSnap is a business tool and isn't meant for children under 16.</p>
+
+    <h2>Changes</h2>
+    <p>When we add online accounts or payments after the beta, some data will be stored on our servers. We'll update this page and tell you in the app <b>before</b> that happens.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy: <a data-contact="QuoteSnap privacy question" href="#"></a></p>
+  </main>
+  <footer class="wrap site-foot">
+    <span>© <span id="yr"></span> QuoteSnap</span>
+    <nav class="foot-links" aria-label="Legal"><a href="index.html">Home</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a data-contact="QuoteSnap question" href="#">Contact</a></nav>
+  </footer>
+  <script src="js/config.js"></script>
+  <script src="js/legal.js"></script>
+</body>
+</html>

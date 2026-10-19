@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#16201a"/>
+  <rect x="96" y="96" width="320" height="320" rx="84" fill="#1f6f4a" transform="rotate(-4 256 256) translate(14 14)"/>
+  <rect x="96" y="96" width="320" height="320" rx="84" fill="#16201a" transform="rotate(-4 256 256)"/>
+  <text x="256" y="338" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="250" text-anchor="middle" fill="#f0b13a" transform="rotate(-4 256 256)">Q</text>
+</svg>

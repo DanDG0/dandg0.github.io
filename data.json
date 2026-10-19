@@ -38,6 +38,20 @@
   ],
   "projects": [
     {
+      "id": "quotesnap",
+      "title": "QuoteSnap",
+      "url": "https://dandg0.github.io/quotesnap/",
+      "desc": "Turns a messy WhatsApp chat into a professional quote, invoice, job checklist and payment reminder for small businesses. Works in any country and currency, with team roles and team chat. Free beta.",
+      "category": "Web app",
+      "tags": [
+        "Small business",
+        "Invoicing",
+        "Mobile-friendly"
+      ],
+      "image": "",
+      "featured": true
+    },
+    {
       "id": "chalkline",
       "title": "Chalkline",
       "url": "https://dandg0.github.io/chalkline/",

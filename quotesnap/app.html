@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>QuoteSnap</title>
+  <meta name="description" content="Turn a WhatsApp chat into a quote, invoice, job checklist and payment reminder.">
+  <meta name="theme-color" content="#f6f2ea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QuoteSnap">
+  <meta property="og:title" content="QuoteSnap: WhatsApp chat to quote & invoice">
+  <meta property="og:description" content="Paste a messy WhatsApp chat and get a professional quote, invoice, job checklist and payment reminder. Free during the beta.">
+  <meta property="og:image" content="https://dandg0.github.io/quotesnap/icons/og.png">
+  <meta property="og:url" content="https://dandg0.github.io/quotesnap/">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://dandg0.github.io/quotesnap/icons/og.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main">
+      <a class="brand" href="index.html"><span class="brand-mark">Q</span><span class="brand-name">QuoteSnap</span></a>
+      <a class="btn btn-primary nav-cta" href="#/new">⚡ Paste &amp; make</a>
+      <nav class="nav">
+        <a href="#/" data-nav="home"><span class="ico" aria-hidden="true">🏠</span>Home</a>
+        <a href="#/jobs" data-nav="jobs"><span class="ico" aria-hidden="true">📋</span>Jobs</a>
+        <a href="#/todos" data-nav="todos"><span class="ico" aria-hidden="true">✅</span>To-dos</a>
+        <a href="#/customers" data-nav="customers"><span class="ico" aria-hidden="true">🗂️</span>Customers</a>
+        <a href="#/reminders" data-nav="reminders"><span class="ico" aria-hidden="true">⏰</span>Reminders <span class="badge" data-badge="reminders" hidden></span></a>
+        <a href="#/chat" data-nav="chat" hidden><span class="ico" aria-hidden="true">💬</span>Chat <span class="badge" data-badge="chat" hidden></span></a>
+        <a href="#/team" data-nav="team"><span class="ico" aria-hidden="true">👥</span>Team</a>
+        <a href="#/settings" data-nav="settings"><span class="ico" aria-hidden="true">⚙️</span>Settings</a>
+      </nav>
+      <div class="sidebar-foot">
+        <button id="user-chip" class="user-chip" data-action="switch-user" hidden></button>
+        <a id="plan-chip" href="#/upgrade" data-nav="upgrade"></a>
+      </div>
+    </aside>
+
+    <div>
+      <div class="mobile-top">
+        <a class="brand" href="index.html" style="padding:0"><span class="brand-mark">Q</span><span class="brand-name">QuoteSnap</span></a>
+        <button id="plan-chip-m" class="menu-btn" data-action="mobile-menu" aria-label="Menu">☰ Menu</button>
+      </div>
+      <main id="view" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Main">
+    <a href="#/" data-nav="home"><span class="ico" aria-hidden="true">🏠</span>Home<span class="badge" data-badge="reminders" hidden></span></a>
+    <a href="#/jobs" data-nav="jobs"><span class="ico" aria-hidden="true">📋</span>Jobs</a>
+    <a href="#/new" data-nav="new" class="snap"><span class="ico" aria-hidden="true">⚡</span>Paste</a>
+    <a href="#/todos" data-nav="todos"><span class="ico" aria-hidden="true">✅</span>To-dos</a>
+    <a href="#/settings" data-nav="settings"><span class="ico" aria-hidden="true">⚙️</span>Settings</a>
+  </nav>
+
+  <script src="js/config.js"></script>
+  <script src="js/regions.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/samples.js"></script>
+  <script src="js/team.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

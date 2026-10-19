@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>QuoteSnap: WhatsApp chat to quote &amp; invoice</title>
+  <meta name="description" content="QuoteSnap turns a messy WhatsApp conversation into a professional quote, invoice, job checklist and payment reminder. Built for tiny businesses.">
+  <meta name="theme-color" content="#f6f2ea">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QuoteSnap">
+  <meta property="og:title" content="QuoteSnap: WhatsApp chat to quote & invoice">
+  <meta property="og:description" content="Paste a messy WhatsApp chat and get a professional quote, invoice, job checklist and payment reminder. Free during the beta.">
+  <meta property="og:image" content="https://dandg0.github.io/quotesnap/icons/og.png">
+  <meta property="og:url" content="https://dandg0.github.io/quotesnap/">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://dandg0.github.io/quotesnap/icons/og.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-nav">
+    <a class="brand" href="index.html" style="padding:0"><span class="brand-mark">Q</span><span class="brand-name">QuoteSnap</span></a>
+    <nav class="links" aria-label="Site">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-primary btn-sm" href="app.html#/new">Try it free</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">The small-business survival kit</p>
+        <h1>From messy WhatsApp chat to <em>paid invoice</em>.</h1>
+        <p class="lead">Paste the conversation with your customer. QuoteSnap pulls out the prices, dates and details and hands you a professional quote, an invoice, a job checklist and a polite payment reminder in one go.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="app.html#/new">⚡ Snap your first chat</a>
+          <a class="btn btn-lg btn-ghost" href="#how">See how it works</a>
+        </div>
+        <div class="trust">
+          <span>✓ Free during the beta</span><span>✓ Sign up in a minute</span><span>✓ Works on your phone</span>
+        </div>
+      </div>
+
+      <div class="demo" aria-label="Example: a WhatsApp chat becomes a quote, invoice and checklist">
+        <div class="phone" aria-hidden="true">
+          <div class="who-top">Sarah J.</div>
+          <div class="bubble them">My water heater is leaking 😩 can you come tomorrow?</div>
+          <div class="bubble me">Call-out <span data-money="80" data-short>$80</span>, element <span data-money="120" data-short>$120</span></div>
+          <div class="bubble me">Labour <span data-money="65" data-short>$65</span>/hr, about 2 hrs</div>
+          <div class="bubble them">ok fine. 42 Oak Street</div>
+          <div class="bubble me">50% deposit to book pls 🙏</div>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="stack" aria-hidden="true">
+          <div class="mini-doc d1">
+            <h5>Quote <span>Q-0012</span></h5>
+            <div class="l"><span>Call-out</span><span data-money="80">$80.00</span></div>
+            <div class="l"><span>Element (part)</span><span data-money="120">$120.00</span></div>
+            <div class="l"><span>Labour × 2 hr</span><span data-money="130">$130.00</span></div>
+            <div class="t"><span>Total</span><span data-money="330">$330.00</span></div>
+          </div>
+          <div class="mini-doc d2">
+            <h5>Reminder <span>friendly</span></h5>
+            <div>Hi Sarah 👋 a friendly reminder: INV-0009 (<span data-money="330">$330.00</span>) is due Friday.</div>
+          </div>
+          <div class="mini-doc d3">
+            <h5>Checklist <span>Tue 9:00</span></h5>
+            <div class="ck"><i class="on"></i> Receive <span data-money="165" data-short>$165</span> deposit</div>
+            <div class="ck"><i class="on"></i> Shut off water before starting</div>
+            <div class="ck"><i></i> Test for leaks after fix</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip" aria-label="Who it's for">
+      <div class="wrap">
+        <span>🔧 Plumbers</span><span>💇 Hairstylists</span><span>🧁 Home bakers</span><span>🎨 Freelancers</span><span>⚡ Electricians</span><span>🧽 Cleaners</span><span>📱 Phone repairs</span><span>🛠️ Handymen</span>
+      </div>
+    </div>
+
+    <section class="section wrap" id="how">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>You already did the hard part in the chat.</h2>
+        <p>Your prices, the customer's address, the date you agreed. It's all sitting in WhatsApp. QuoteSnap turns it into paperwork.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Paste the chat</h3><p>Copy the messages or export the chat. Nothing to type out again.</p></div>
+        <div class="step"><h3>Check the details</h3><p>QuoteSnap finds the customer, line items, deposit and booking date. Fix anything in seconds.</p></div>
+        <div class="step"><h3>Send &amp; get paid</h3><p>Share the quote or invoice back on WhatsApp or as a PDF. Reminders follow up for you.</p></div>
+      </div>
+    </section>
+
+    <section class="section wrap" style="padding-top:0">
+      <div class="section-head">
+        <p class="eyebrow">One chat, four documents</p>
+        <h2>Everything a job needs.</h2>
+      </div>
+      <div class="outputs">
+        <div class="out"><div class="e">📝</div><h3>Quote</h3><p>Clean, numbered, with your deposit and a “reply YES to book” line.</p></div>
+        <div class="out"><div class="e">🧾</div><h3>Invoice</h3><p>One tap from an accepted quote, with your banking details and a due date.</p></div>
+        <div class="out"><div class="e">✅</div><h3>Job checklist</h3><p>What to buy, pack and check, tailored to your trade and what the customer asked for.</p></div>
+        <div class="out"><div class="e">⏰</div><h3>Payment reminder</h3><p>Friendly, firm or final. The wording's done, so chasing money feels less awkward.</p></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="pricing" style="padding-top:0">
+      <div class="section-head">
+        <p class="eyebrow">Pricing</p>
+        <h2>Start free. Upgrade when you're busy.</h2>
+      </div>
+      <div class="beta-banner"><b>🎉 We're in beta:</b> Pro and Teams are free while we test. These prices start after the beta, and we'll let you know well before anything changes.</div>
+      <div class="plans plans-3" style="justify-content:start">
+        <section class="plan-card">
+          <h2>Free</h2>
+          <p class="price">Free <small>forever</small></p>
+          <ul class="ticks">
+            <li>5 quotes or invoices a month</li>
+            <li>Unlimited chat snaps &amp; checklists</li>
+            <li>WhatsApp sharing &amp; PDF download</li>
+            <li>Manual payment reminders</li>
+          </ul>
+          <a class="btn btn-block" href="app.html#/new">Start free</a>
+        </section>
+        <section class="plan-card featured">
+          <span class="ribbon">Most popular</span>
+          <h2>Pro</h2>
+          <p class="price">$5 <small>/ month</small></p>
+          <ul class="ticks">
+            <li><b>Unlimited</b> documents</li>
+            <li>Your <b>logo &amp; brand colour</b></li>
+            <li><b>Customer history</b> &amp; who owes you</li>
+            <li><b>Automatic reminders</b> before &amp; after due dates</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="app.html#/upgrade">Go Pro</a>
+        </section>
+        <section class="plan-card">
+          <span class="ribbon" style="background:var(--green);color:#fff">Add-on</span>
+          <h2>Teams</h2>
+          <p class="price"><span data-team-price>$3</span> <small>/ month</small></p>
+          <ul class="ticks">
+            <li>Add <b>all your employees</b></li>
+            <li><b>Roles</b>: Finance, Sales, Field staff or your own</li>
+            <li>You decide <b>who sees what</b>: prices, invoices, customers</li>
+            <li><b>Team chat</b> with the people you pick</li>
+          </ul>
+          <a class="btn btn-block" href="app.html#/team">Add Teams</a>
+        </section>
+      </div>
+    </section>
+
+    <section class="section wrap" id="faq" style="padding-top:0">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2>Good to know</h2></div>
+      <div class="faq">
+        <details><summary>Do I need to create an account?</summary><p>Yes, it takes a minute: your name, email or phone, and a password, so only you can open your quotes and invoices. Your team members each get an invite code and choose their own password. Your data is saved on this device; use “Download backup” in Settings to move it.</p></details>
+        <details><summary>Does QuoteSnap read my WhatsApp?</summary><p>Only what you paste in. The chat is read right on your device and never uploaded anywhere.</p></details>
+        <details><summary>Will it send messages for me?</summary><p>QuoteSnap writes the message and opens WhatsApp with it ready to go. You tap send, so nothing goes out without you seeing it.</p></details>
+        <details><summary>What if it reads a price wrong?</summary><p>Every line is editable before you issue the document. If it picked the wrong person as “you”, switch it under <i>Original chat</i> and it re-reads everything.</p></details>
+        <details><summary>Does it work in my country?</summary><p>Yes, anywhere WhatsApp works. QuoteSnap picks up your country and sets your currency, number style, phone code, date format and tax name (VAT, GST, sales tax…). It reads prices however people type them: $350, €350, 350 €, £1,200, ₹1,20,000, 1.200,50 €, 350 kr, ¥5,000 and more. You can change any of it in Settings, and bill a client in a different currency job by job.</p></details>
+        <details><summary>Can my employees use it too?</summary><p>Yes, with the Teams add-on (<span data-team-price>$3</span>/month, priced for your country). Add your people, give each a role, and they only see what their job needs. Field staff can see their assigned jobs without any prices, while Finance handles quotes and invoices. You also choose who is in each team chat.</p></details>
+        <details><summary>Can I save it as a PDF?</summary><p>Yes. Tap <i>Print / PDF</i> and choose “Save as PDF”. Only the document prints, not the app.</p></details>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-bottom:40px">
+      <div class="cta-band">
+        <h2>Your next quote is one paste away.</h2>
+        <a class="btn btn-lg" href="app.html#/new">⚡ Try QuoteSnap free</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap site-foot">
+    <span>© <span id="yr"></span> QuoteSnap. Made for people who'd rather be working.</span>
+    <nav class="foot-links" aria-label="Legal">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a data-contact="QuoteSnap feedback" href="#">Contact</a>
+      <a href="app.html">Open the app →</a>
+    </nav>
+  </footer>
+  <script src="js/regions.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/samples.js"></script>
+  <script src="js/team.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/landing.js"></script>
+</body>
+</html>
