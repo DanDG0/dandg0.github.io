@@ -981,7 +981,6 @@ function openLocal() {
   });
 }
 const subjSlug = s => s.toLowerCase().replace(/[^a-z]/g, "");
-const subjTag = s => `<span class="stag" style="--h:${hue(s)}">${esc(s)}</span>`;
 function parseQuery(q) {
   const tags = [], words = [];
   q.toLowerCase().split(/\s+/).filter(Boolean).forEach(t => { if (t.startsWith("#")) { const c = cleanTag(t); if (c) tags.push(c); } else words.push(t); });
@@ -1019,7 +1018,7 @@ function cardHTML(l) {
       <h3>${esc(l.title)}</h3>
       <p class="sum">${esc(l.summary)}</p>
       <span class="meta">${metaLine(l)}</span>
-      <span class="tags">${subjTag(l.subject)}${l.tags.slice(0, 3).map(t => `<span class="tag">#${esc(t)}</span>`).join("")}</span>
+      <span class="tags">${l.tags.slice(0, 3).map(t => `<span class="tag">#${esc(t)}</span>`).join("")}</span>
     </button>
     <button class="iconbtn ${saved ? "on" : ""}" data-save="${esc(l.id)}" aria-pressed="${saved}" aria-label="${saved ? "Remove from saves" : "Save lesson"}">${saved ? I.bmOn : I.bm}</button>
   </div>`;
@@ -1104,7 +1103,7 @@ function updateResults() {
   const rest = [...feed].sort((a, b) => b.s - a.s || a.l.title.localeCompare(b.l.title));
   box.innerHTML = ageNote() + `
     <section><div class="sec-h"><h2>Picked for you</h2><span>Worldwide</span></div>
-      <div class="rail">${picks.map(x => `<button class="board" data-open="${esc(x.l.id)}"><span class="why">${esc(x.why)}</span><h3>${esc(x.l.title)}</h3><p>${esc(x.l.summary)}</p><span class="meta"><span class="stag on-board">${esc(x.l.subject)}</span> ${esc(gradeLabel(x.l.grades))} · ${x.l.duration} min</span></button>`).join("")}</div></section>
+      <div class="rail">${picks.map(x => `<button class="board" data-open="${esc(x.l.id)}"><span class="why">${esc(x.why)}</span><h3>${esc(x.l.title)}</h3><p>${esc(x.l.summary)}</p><span class="meta">${esc(x.l.subject)} · ${esc(gradeLabel(x.l.grades))} · ${x.l.duration} min</span></button>`).join("")}</div></section>
     <section class="local"><div class="sec-h"><h2>From ${esc(c.name)}</h2><button class="link" data-act="more-local">More ${I.chevR}</button></div>
       <p class="local-sub">${localUp ? `${localUp} plan${localUp === 1 ? "" : "s"} uploaded by local teachers` : `Local plans for ${esc(c.curric)} classrooms`}</p>
       ${local.length ? `<div class="minis">${local.slice(0, 3).map(miniHTML).join("")}</div>` : `<p class="local-sub" style="margin-top:8px">No plans from ${esc(c.name)} yet. <button class="link" data-act="upload">Share the first one</button></p>`}
@@ -1196,7 +1195,7 @@ function openLesson(id) {
       ${l.objectives.length ? `<div class="d-sec"><h3>Learning objectives</h3><ul class="ticks">${l.objectives.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>` : ""}
       ${l.materials.length ? `<div class="d-sec"><h3>Materials</h3><ul class="ticks">${l.materials.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>` : ""}
       ${l.steps.length ? `<div class="d-sec"><h3>Lesson flow</h3><ol class="steps">${l.steps.map(s => `<li><span>${esc(s.t)}</span><span class="m">${s.min ? s.min + " min" : ""}</span></li>`).join("")}</ol></div>` : ""}
-      <div class="d-sec"><h3>Subject and hashtags</h3><div class="tags"><button class="stag" data-tag="${esc(subjSlug(l.subject))}" style="--h:${hue(l.subject)}">${esc(l.subject)}</button>${l.tags.map(t => `<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join("")}</div></div>
+      ${l.tags.length ? `<div class="d-sec"><h3>Hashtags</h3><div class="tags">${l.tags.map(t => `<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join("")}</div></div>` : ""}
       <div class="by">${l.community ? `<span class="av" style="width:34px;height:34px">${esc((l.author || "?")[0].toUpperCase())}</span><span>Shared by <b>@${esc(l.author)}</b>${l.countries[0] ? " · " + esc(COUNTRIES[l.countries[0]].name) : ""}</span>` : `<span class="av" style="width:34px;height:34px">C</span><span><b>Chalkline Library</b> · adapt freely to your class and ${esc(c.curric)} requirements</span>`}</div>
       ${isMine(l) ? `<button class="btn danger block" style="margin-top:16px" data-del="${esc(l.id)}">${I.trash}Remove my lesson</button>` : (l.community && isOwner && !l.local ? `<button class="btn danger block" style="margin-top:16px" data-del="${esc(l.id)}">${I.trash}Remove from public listings</button>` : "")}
     </div>
