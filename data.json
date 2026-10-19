@@ -12,12 +12,8 @@
       "I care about clean interfaces, fast pages and the small details that make an app feel finished. Most of what I build runs in the browser and works just as well on mobile.",
       "This site is my home base. Every project I ship has a link here, so the Projects tab is the best place to see what I've been working on."
     ],
-    "drumsIntro": "Away from the keyboard I play drums.",
-    "genres": [
-      "Rock",
-      "Funk",
-      "Pop"
-    ],
+    "drumsIntro": "Away from the keyboard I like to keep healthy and stay active. I play golf and basketball, and I play drums.",
+    "genres": [],
     "kit": [],
     "codeIntro": "I build for the browser first and keep picking up new tools as projects need them.",
     "stack": [
