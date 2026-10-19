@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Daniel de Gois</title>
+<meta name="description" content="Drummer and developer. Web apps, games and software by Daniel de Gois.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style id="app-style">
+/* Layout: left-weighted name with a playable drum-machine panel beside it, a sticky tab bar, then a grid of project link cards. */
+:root{
+  --bg:#ECEEF2; --surface:#F8F9FB; --raised:#FFFFFF; --ink:#151821; --muted:#596074; --line:#D4D8E0;
+  --brass:#946409; --brass-ink:#FFFFFF; --brass-soft:#F1E5C8;
+  --shell:#1C2135; --shell-ink:#E9EBF2; --shell-dim:#353C59; --shell-mute:#8E95B0;
+  --danger:#B3261E; --ok:#1F7A4D;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1117; --surface:#151821; --raised:#1B1F2C; --ink:#ECEEF3; --muted:#9AA1B4; --line:#2A2F3D;
+  --brass:#E2B24F; --brass-ink:#1A1405; --brass-soft:#3A2F17;
+  --shell:#171B2B; --shell-ink:#E9EBF2; --shell-dim:#2C3350; --shell-mute:#8289A6;
+  --danger:#FF8A80; --ok:#6FD3A0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1117; --surface:#151821; --raised:#1B1F2C; --ink:#ECEEF3; --muted:#9AA1B4; --line:#2A2F3D;
+  --brass:#E2B24F; --brass-ink:#1A1405; --brass-soft:#3A2F17;
+  --shell:#171B2B; --shell-ink:#E9EBF2; --shell-dim:#2C3350; --shell-mute:#8289A6;
+  --danger:#FF8A80; --ok:#6FD3A0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;text-decoration:none;margin-right:auto;min-width:0}
+.mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--shell);color:var(--brass);font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.04em;box-shadow:inset 0 0 0 3px var(--shell-dim)}
+.brand span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tab{border:0;background:none;padding:6px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;color:var(--muted);text-decoration:none}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--raised);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--brass);border-color:var(--brass);color:var(--brass-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.sm{padding:5px 10px;font-size:13px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center;padding-block:clamp(36px,7vw,80px) clamp(28px,5vw,56px)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:0 0 12px}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(56px,10vw,128px);line-height:.86;letter-spacing:-.01em;margin:0;text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+.lede{font-size:clamp(18px,2vw,21px);max-width:34ch;margin:20px 0 0;color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:24px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.facts b{color:var(--ink);font-weight:600}
+
+/* drum machine */
+.seq{background:var(--shell);color:var(--shell-ink);border-radius:16px;padding:18px;box-shadow:0 1px 0 var(--shell-dim) inset,0 18px 40px -24px rgba(0,0,0,.6);min-width:0}
+.seq-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.seq-title{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--shell-mute);margin-right:auto}
+.play{width:42px;height:42px;border-radius:50%;border:0;background:var(--brass);color:var(--brass-ink);cursor:pointer;display:grid;place-items:center}
+.play svg{width:16px;height:16px}
+.tempo{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;background:var(--shell-dim);border-radius:8px;padding:4px}
+.tempo button{border:0;background:transparent;color:var(--shell-ink);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1}
+.tempo button:hover{background:rgba(255,255,255,.08)}
+.tempo output{min-width:7ch;text-align:center;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:34px repeat(16,minmax(0,1fr));gap:4px;align-items:center}
+.lane{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--shell-mute)}
+.step{aspect-ratio:1/1.35;max-width:100%;border:0;border-radius:4px;background:var(--shell-dim);cursor:pointer;padding:0;transition:background .08s}
+.step.beat{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.step.on{background:var(--brass)}
+.step.now{outline:2px solid var(--shell-ink);outline-offset:0}
+.counts{display:contents}
+.count{font-family:var(--mono);font-size:9px;text-align:center;color:var(--shell-mute);padding-top:2px}
+.count.n{color:var(--shell-ink)}
+.seq-foot{margin-top:12px;font-size:12px;color:var(--shell-mute)}
+
+/* sections */
+.view{padding-block:8px 96px}
+.sec-head{display:flex;align-items:end;gap:16px 24px;flex-wrap:wrap;margin-bottom:24px}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,4.5vw,48px);line-height:1;margin:0;text-transform:uppercase;letter-spacing:.01em}
+.count-badge{font-family:var(--mono);font-size:13px;color:var(--muted);margin-left:8px;vertical-align:middle}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+
+.quick{display:flex;gap:8px;margin-bottom:24px;background:var(--surface);border:1px dashed var(--brass);border-radius:var(--r);padding:12px;flex-wrap:wrap}
+.quick input{flex:1 1 240px;min-width:0;border:1px solid var(--line);background:var(--raised);border-radius:8px;padding:9px 12px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:20px}
+.card{position:relative;background:var(--raised);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 32px -20px rgba(10,14,30,.45);border-color:color-mix(in srgb,var(--brass) 50%,var(--line))}
+.card.feat{grid-column:span 2}
+@media (max-width:700px){.card.feat{grid-column:auto}}
+.card-link{display:flex;flex-direction:column;text-decoration:none;color:inherit;height:100%}
+.cover{aspect-ratio:16/8;background:var(--shell);position:relative;overflow:hidden}
+.card.feat .cover{aspect-ratio:16/6.4}
+@media (max-width:700px){.card.feat .cover{aspect-ratio:16/8}}
+.cover img,.cover svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.flag{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(10,12,20,.72);color:#fff}
+.flag.feat-flag{left:auto;right:10px;background:var(--brass);color:var(--brass-ink)}
+.card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.meta{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--muted);min-width:0}
+.cat{color:var(--brass);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;white-space:nowrap}
+.dom{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card h3{font-size:20px;line-height:1.2;margin:0;font-weight:700;text-wrap:balance;overflow-wrap:anywhere}
+.card p{margin:0;color:var(--muted);font-size:15px;overflow-wrap:anywhere}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:auto 0 0;padding:6px 0 0}
+.tags li{font-size:12px;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.open{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--ink);margin-top:4px}
+.card:hover .open{color:var(--brass)}
+.tools{display:flex;gap:6px;padding:10px 12px;border-top:1px dashed var(--line);background:var(--surface);flex-wrap:wrap}
+.tools .spacer{flex:1}
+
+.empty{border:1px dashed var(--line);border-radius:14px;padding:48px 24px;text-align:center;color:var(--muted)}
+.empty h3{color:var(--ink);margin:0 0 6px;font-size:20px}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(28px,5vw,64px)}
+.prose p{font-size:18px;max-width:62ch;margin:0 0 1em}
+.prose p:first-child{font-size:21px}
+.side{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--raised);border:1px solid var(--line);border-radius:14px;padding:20px}
+.panel h3{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:0 0 10px;font-weight:600}
+.panel p{margin:0 0 12px;color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.pills li{font-size:14px;padding:4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.kit{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.kit li{display:flex;gap:10px;font-size:15px}
+.kit li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brass);margin-top:8px;flex:none}
+.contact{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.contact a{display:flex;justify-content:space-between;gap:12px;text-decoration:none;font-weight:600;padding:8px 0;border-bottom:1px solid var(--line)}
+.contact a span:last-child{color:var(--muted);font-family:var(--mono);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.mail{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.mail code{font-family:var(--mono);font-size:14px;user-select:all;overflow-wrap:anywhere}
+
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* edit mode */
+.editbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--shell);color:var(--shell-ink);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.editbar .wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-inline:0}
+.editbar .status{margin-right:auto;font-size:14px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--shell-mute)}
+.dot.dirty{background:var(--brass)}
+.editbar .btn{background:transparent;color:var(--shell-ink);border-color:var(--shell-dim)}
+.editbar .btn.primary{background:var(--brass);border-color:var(--brass);color:var(--brass-ink)}
+.banner{background:var(--brass-soft);border:1px solid var(--brass);border-radius:var(--r);padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.banner span{margin-right:auto}
+
+.modal-back{position:fixed;inset:0;z-index:50;background:rgba(8,10,18,.55);display:grid;place-items:center;padding:16px;overflow:auto}
+.modal{background:var(--raised);border:1px solid var(--line);border-radius:16px;width:min(620px,100%);max-height:calc(100dvh - 32px);overflow:auto;padding:24px}
+.modal h2{font-size:32px;margin-bottom:4px}
+.modal .sub{color:var(--muted);margin:0 0 20px;font-size:14px}
+.fields{display:grid;gap:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+label.f{display:grid;gap:6px;font-size:13px;font-weight:600;min-width:0}
+label.f small{font-weight:400;color:var(--muted)}
+.f input[type=text],.f input[type=url],.f input[type=email],.f input[type=number],.f select,.f textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 12px;font-weight:400;font-size:15px}
+.f textarea{resize:vertical;min-height:84px;line-height:1.5}
+.check{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.imgrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.thumb{width:120px;aspect-ratio:16/8;border-radius:8px;overflow:hidden;background:var(--shell);position:relative;flex:none}
+.thumb img,.thumb svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex-wrap:wrap}
+.err{color:var(--danger);font-size:13px;min-height:1em;margin:0}
+
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;max-width:calc(100% - 32px);box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+
+@media (max-width:860px){.hero{grid-template-columns:1fr}.about{grid-template-columns:1fr}}
+@media (max-width:480px){.grid{grid-template-columns:24px repeat(16,minmax(0,1fr));gap:3px}.seq{padding:14px}.tabs .tab{padding:6px 12px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}.card:hover{transform:none}}
+body.editing{padding-bottom:84px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+"use strict";
+var DRAFT_KEY='portfolio-draft-v1';
+var S={
+  data:null, savedJSON:'', loadMsg:'Loading…',
+  tab:(location.hash==='#about')?'about':'projects',
+  filter:'All', canEdit:false, editing:false, saving:false,
+  draft:null, confirmDel:null
+};
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function dirty(){return JSON.stringify(S.data)!==S.savedJSON}
+function $(sel,root){return (root||document).querySelector(sel)}
+function uid(){return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function safeUrl(u){u=String(u||'').trim();if(!u)return '';if(!/^[a-z][a-z0-9+.-]*:/i.test(u))u='https://'+u;try{var x=new URL(u);if(x.protocol!=='http:'&&x.protocol!=='https:')return '';return x.href}catch(e){return ''}}
+function host(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}}
+function guessTitle(u){try{var x=new URL(u);var parts=x.pathname.split('/').filter(Boolean);var h=x.hostname.replace(/^www\./,'');var base;
+  if(/github\.io$/.test(h)) base=parts[0]||h.split('.')[0];
+  else if(/github\.com$|itch\.io$|vercel\.app$|netlify\.app$|pages\.dev$/.test(h)) base=parts[parts.length-1]||h.split('.')[0];
+  else base=h.split('.')[0];
+  return base.replace(/[-_]+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()})}catch(e){return ''}}
+function list(s){return String(s||'').split(',').map(function(x){return x.trim()}).filter(Boolean)}
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return function(){seed=(seed+0x6D2B79F5)|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* Each project gets its own one-bar groove as cover art */
+function coverSVG(p){
+  var h=hash((p.title||'')+(p.url||'')), r=rng(h), hue=h%360;
+  var bg='hsl('+hue+' 38% 22%)', bg2='hsl('+((hue+40)%360)+' 45% 30%)';
+  var rows=[[],[],[]];
+  for(var i=0;i<16;i++){rows[0].push(r()<(i%2?0.35:0.9));rows[1].push((i===4||i===12)?true:r()<0.12);rows[2].push(i===0?true:r()<(i%4===0?0.5:0.18))}
+  var W=320,H=160,cw=14,gap=3,x0=(W-(16*cw+15*gap))/2,y0=46,ch=18;
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="g'+h+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+bg+'"/><stop offset="1" stop-color="'+bg2+'"/></linearGradient></defs><rect width="'+W+'" height="'+H+'" fill="url(#g'+h+')"/>';
+  s+='<circle cx="'+(W-36)+'" cy="'+(H+10)+'" r="90" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="18"/>';
+  for(var row=0;row<3;row++)for(var c=0;c<16;c++){var on=rows[row][c];var x=x0+c*(cw+gap),y=y0+row*(ch+6);
+    s+='<rect x="'+x.toFixed(1)+'" y="'+y+'" width="'+cw+'" height="'+ch+'" rx="3" fill="'+(on?(row===1?'hsl('+((hue+180)%360)+' 80% 72%)':'rgba(255,255,255,.88)'):'rgba(255,255,255,.12)')+'"/>'}
+  s+='</svg>';return s}
+function coverHTML(p){return p.image?'<img src="'+esc(p.image)+'" alt="">':coverSVG(p)}
+
+/* ---------- render ---------- */
+function render(){
+  if(!S.data){document.getElementById('app').innerHTML='<div class="wrap" style="padding-block:96px;color:var(--muted)">'+esc(S.loadMsg)+'</div>';return}
+  var d=S.data,P=d.profile;
+  document.title=P.name||'Portfolio';
+  var app=document.getElementById('app');
+  var h='';
+  h+='<header class="top"><div class="wrap"><a class="brand" href="#projects" data-tab="projects"><span class="mark">'+esc(P.initials||initials(P.name))+'</span><span>'+esc(P.name)+'</span></a>';
+  h+='<nav class="tabs" role="tablist" aria-label="Sections"><a href="#projects" class="tab" role="tab" data-tab="projects" aria-selected="'+(S.tab==='projects')+'">Projects</a><a href="#about" class="tab" role="tab" data-tab="about" aria-selected="'+(S.tab==='about')+'">About me</a></nav>';
+  if(S.canEdit&&!S.editing) h+='<button class="btn sm" id="startEdit" type="button">Edit site</button>';
+  h+='</div></header>';
+  h+='<div class="wrap">';
+  if(S.draft&&S.canEdit) h+='<div class="banner"><span>You have unsaved edits from an earlier session.</span><button class="btn sm primary" id="restore" type="button">Restore them</button><button class="btn sm ghost" id="dropDraft" type="button">Discard</button></div>';
+  h+='<section class="hero"><div><p class="eyebrow">'+esc(P.role)+'</p><h1>'+esc(P.name)+'</h1><p class="lede">'+esc(P.tagline)+'</p><div class="facts">';
+  var real=d.projects.filter(function(p){return !p.sample}).length;
+  if(real) h+='<span><b>'+real+'</b> project'+(real===1?'':'s')+'</span>';
+  if(P.location) h+='<span>Based in <b>'+esc(P.location)+'</b></span>';
+  if(P.now) h+='<span>Now: <b>'+esc(P.now)+'</b></span>';
+  h+='</div></div>'+seqHTML()+'</section>';
+  h+=S.tab==='about'?aboutHTML():projectsHTML();
+  h+='</div>';
+  h+='<footer><div class="wrap"><span>© '+new Date().getFullYear()+' '+esc(P.name)+'</span><span>Built in 4/4</span></div></footer>';
+  if(S.editing){
+    h+='<div class="editbar" role="region" aria-label="Editing"><div class="wrap"><span class="status"><span class="dot'+(dirty()?' dirty':'')+'"></span>'+(dirty()?'Unsaved changes':'Editing · no changes yet')+'</span>';
+    h+='<button class="btn sm" id="addLink" type="button">+ Add link</button><button class="btn sm" id="editProfile" type="button">Edit about me</button>';
+    h+='<button class="btn sm" id="discard" type="button"'+(dirty()?'':' disabled')+'>Discard</button>';
+    h+='<button class="btn sm" id="signOut" type="button">Sign out</button>';
+    h+='<button class="btn sm" id="stopEdit" type="button">Done</button>';
+    h+='<button class="btn sm primary" id="save" type="button"'+(dirty()&&!S.saving?'':' disabled')+'>'+(S.saving?'Saving…':'Save')+'</button></div></div>';
+  }
+  document.body.classList.toggle('editing',S.editing);
+  app.innerHTML=h;
+  paintSteps();
+}
+function initials(n){return String(n||'?').split(/\s+/).filter(Boolean).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase()}
+
+function projectsHTML(){
+  var d=S.data,cats=['All'].concat(d.categories.filter(function(c){return d.projects.some(function(p){return p.category===c})}));
+  if(cats.indexOf(S.filter)<0)S.filter='All';
+  var items=d.projects.filter(function(p){return S.filter==='All'||p.category===S.filter});
+  var h='<section class="view" id="projects" aria-labelledby="ph"><div class="sec-head"><h2 id="ph">Projects<span class="count-badge">'+d.projects.length+'</span></h2>';
+  if(cats.length>2){h+='<div class="filters" role="group" aria-label="Filter by type">';cats.forEach(function(c){h+='<button class="chip" type="button" data-filter="'+esc(c)+'" aria-pressed="'+(S.filter===c)+'">'+esc(c)+'</button>'});h+='</div>'}
+  h+='</div>';
+  if(S.editing) h+='<form class="quick" id="quick"><input id="quickUrl" type="text" inputmode="url" placeholder="Paste a website link, e.g. mygame.itch.io" aria-label="Website link"><button class="btn primary" type="submit">Add link</button></form>';
+  if(!items.length){
+    h+='<div class="empty"><h3>No projects here yet</h3><p>'+(S.canEdit?'Choose Edit site, then paste a link to add your first project.':'Check back soon.')+'</p></div>';
+  } else {
+    h+='<div class="cards">';
+    items.forEach(function(p){
+      var i=d.projects.indexOf(p);
+      h+='<article class="card'+(p.featured?' feat':'')+'"><a class="card-link" href="'+esc(p.url)+'" target="_blank" rel="noopener noreferrer"><div class="cover">'+coverHTML(p)+(p.sample?'<span class="flag">Sample</span>':'')+(p.featured?'<span class="flag feat-flag">Featured</span>':'')+'</div><div class="card-body"><div class="meta"><span class="cat">'+esc(p.category)+'</span><span class="dom">'+esc(host(p.url))+'</span></div><h3>'+esc(p.title)+'</h3>'+(p.desc?'<p>'+esc(p.desc)+'</p>':'');
+      if(p.tags&&p.tags.length){h+='<ul class="tags">';p.tags.forEach(function(t){h+='<li>'+esc(t)+'</li>'});h+='</ul>'}
+      h+='<span class="open">Visit site <span aria-hidden="true">↗</span></span></div></a>';
+      if(S.editing){
+        h+='<div class="tools"><button class="btn sm" type="button" data-move="-1" data-i="'+i+'" aria-label="Move earlier"'+(i===0?' disabled':'')+'>←</button><button class="btn sm" type="button" data-move="1" data-i="'+i+'" aria-label="Move later"'+(i===d.projects.length-1?' disabled':'')+'>→</button><span class="spacer"></span><button class="btn sm" type="button" data-edit="'+i+'">Edit</button>';
+        h+=S.confirmDel===p.id?'<button class="btn sm danger" type="button" data-del="'+i+'">Confirm delete</button>':'<button class="btn sm ghost danger" type="button" data-askdel="'+esc(p.id)+'">Delete</button>';
+        h+='</div>';
+      }
+      h+='</article>';
+    });
+    h+='</div>';
+  }
+  return h+'</section>';
+}
+
+function aboutHTML(){
+  var P=S.data.profile,h='<section class="view" id="about" aria-labelledby="ah"><div class="sec-head"><h2 id="ah">About me</h2></div><div class="about"><div class="prose">';
+  (P.about||[]).forEach(function(par){h+='<p>'+esc(par)+'</p>'});
+  h+='</div><div class="side">';
+  h+='<div class="panel"><h3>Behind the kit</h3>'+(P.drumsIntro?'<p>'+esc(P.drumsIntro)+'</p>':'');
+  if(P.genres&&P.genres.length){h+='<ul class="pills">';P.genres.forEach(function(g){h+='<li>'+esc(g)+'</li>'});h+='</ul>'}
+  if(P.kit&&P.kit.length){h+='<ul class="kit" style="margin-top:14px">';P.kit.forEach(function(k){h+='<li>'+esc(k)+'</li>'});h+='</ul>'}
+  if(P.bpm) h+='<p style="margin:14px 0 0;font-family:var(--mono);font-size:13px">Comfort tempo: ♩ = '+esc(P.bpm)+'</p>';
+  h+='</div>';
+  h+='<div class="panel"><h3>At the keyboard</h3>'+(P.codeIntro?'<p>'+esc(P.codeIntro)+'</p>':'');
+  if(P.stack&&P.stack.length){h+='<ul class="pills">';P.stack.forEach(function(g){h+='<li>'+esc(g)+'</li>'});h+='</ul>'}
+  h+='</div>';
+  if((P.contact&&P.contact.length)||P.email){
+    h+='<div class="panel"><h3>Find me</h3>';
+    if(P.contact&&P.contact.length){h+='<ul class="contact">';P.contact.forEach(function(c){h+='<li><a href="'+esc(c.url)+'" target="_blank" rel="noopener noreferrer"><span>'+esc(c.label)+' ↗</span><span>'+esc(host(c.url))+'</span></a></li>'});h+='</ul>'}
+    if(P.email) h+='<div class="mail"><code>'+esc(P.email)+'</code><button class="btn sm" type="button" id="copyMail">Copy email</button></div>';
+    h+='</div>';
+  }
+  return h+'</div></div></section>';
+}
+
+/* ---------- drum machine ---------- */
+var LANES=[{k:'hh',n:'HH'},{k:'sn',n:'SN'},{k:'bd',n:'BD'}];
+var pat={hh:[],sn:[],bd:[]};
+for(var i=0;i<16;i++){pat.hh[i]=i%2===0;pat.sn[i]=(i===4||i===12);pat.bd[i]=(i===0||i===8||i===10)}
+var A={ctx:null,noise:null,playing:false,step:0,next:0,timer:null,bpm:null,cur:-1};
+function seqHTML(){
+  var bpm=A.bpm||S.data.profile.bpm||96;
+  var h='<div class="seq" aria-label="Drum machine"><div class="seq-head"><span class="seq-title">Groove · 4/4 · 16 steps</span>';
+  h+='<div class="tempo"><button type="button" id="bpmDown" aria-label="Slower">−</button><output id="bpmOut">♩ = '+bpm+'</output><button type="button" id="bpmUp" aria-label="Faster">+</button></div>';
+  h+='<button class="play" type="button" id="play" aria-label="'+(A.playing?'Stop':'Play')+'">'+(A.playing?'<svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="1.5" fill="currentColor"/></svg>':'<svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z" fill="currentColor"/></svg>')+'</button></div><div class="grid">';
+  LANES.forEach(function(L){h+='<span class="lane">'+L.n+'</span>';for(var i=0;i<16;i++)h+='<button type="button" class="step'+(i%4===0?' beat':'')+'" data-lane="'+L.k+'" data-s="'+i+'" aria-label="'+L.n+' step '+(i+1)+'"></button>'});
+  h+='<span></span>';var lab=['1','e','&','a'];for(var j=0;j<16;j++)h+='<span class="count'+(j%4===0?' n':'')+'">'+(j%4===0?(j/4+1):lab[j%4])+'</span>';
+  h+='</div><p class="seq-foot">Tap the pads to write a beat, then press play.</p></div>';
+  return h}
+function paintSteps(){document.querySelectorAll('.step').forEach(function(b){var on=pat[b.dataset.lane][+b.dataset.s];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.classList.toggle('now',+b.dataset.s===A.cur)})}
+function setNow(s){A.cur=s;document.querySelectorAll('.step').forEach(function(b){b.classList.toggle('now',+b.dataset.s===s)})}
+function ctx(){if(!A.ctx){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;A.ctx=new C();var len=A.ctx.sampleRate;var buf=A.ctx.createBuffer(1,len,A.ctx.sampleRate);var d=buf.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;A.noise=buf}return A.ctx}
+function noise(t,hp,g0,dur){var c=A.ctx,s=c.createBufferSource();s.buffer=A.noise;var f=c.createBiquadFilter();f.type='highpass';f.frequency.value=hp;var g=c.createGain();g.gain.setValueAtTime(g0,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);s.connect(f).connect(g).connect(c.destination);s.start(t);s.stop(t+dur+.02)}
+function kick(t){var c=A.ctx,o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.14);g.gain.setValueAtTime(.95,t);g.gain.exponentialRampToValueAtTime(.001,t+.42);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.45)}
+function snare(t){noise(t,1200,.55,.18);var c=A.ctx,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(190,t);g.gain.setValueAtTime(.35,t);g.gain.exponentialRampToValueAtTime(.001,t+.1);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.12)}
+function hat(t){noise(t,7500,.22,.05)}
+function tick(){var c=A.ctx;var bpm=A.bpm||S.data.profile.bpm||96;while(A.next<c.currentTime+.12){var s=A.step,t=A.next;if(pat.bd[s])kick(t);if(pat.sn[s])snare(t);if(pat.hh[s])hat(t);(function(s,t){setTimeout(function(){if(A.playing)setNow(s)},Math.max(0,(t-c.currentTime)*1000))})(s,t);A.next+=60/bpm/4;A.step=(A.step+1)%16}}
+function togglePlay(){var c=ctx();if(!c)return toast('Audio is not available in this browser.');if(A.playing){A.playing=false;clearInterval(A.timer);setNow(-1)}else{if(c.state==='suspended')c.resume();A.playing=true;A.step=0;A.next=c.currentTime+.05;A.timer=setInterval(tick,25);tick()}
+  var b=$('#play');if(b){b.setAttribute('aria-label',A.playing?'Stop':'Play');b.innerHTML=A.playing?'<svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="1.5" fill="currentColor"/></svg>':'<svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z" fill="currentColor"/></svg>'}}
+function bump(n){A.bpm=Math.max(60,Math.min(200,(A.bpm||S.data.profile.bpm||96)+n));var o=$('#bpmOut');if(o)o.textContent='♩ = '+A.bpm}
+
+/* ---------- modals ---------- */
+function openModal(html,onMount){closeModal();var back=document.createElement('div');back.className='modal-back';back.id='modalBack';back.innerHTML='<div class="modal" role="dialog" aria-modal="true">'+html+'</div>';document.body.appendChild(back);back.addEventListener('mousedown',function(e){if(e.target===back)closeModal()});if(onMount)onMount(back);var f=back.querySelector('input,textarea,select');if(f)f.focus()}
+function closeModal(){var m=$('#modalBack');if(m)m.remove()}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
+
+function linkModal(idx,prefillUrl){
+  var d=S.data,isNew=idx==null,p=isNew?{title:'',url:prefillUrl||'',desc:'',category:d.categories[0],tags:[],image:'',featured:false}:clone(d.projects[idx]);
+  if(isNew&&prefillUrl)p.title=guessTitle(prefillUrl);
+  var opts=d.categories.map(function(c){return '<option'+(c===p.category?' selected':'')+'>'+esc(c)+'</option>'}).join('');
+  var h='<h2>'+(isNew?'Add a link':'Edit link')+'</h2><p class="sub">This card goes live when you choose Save.</p><form id="linkForm" class="fields" novalidate>';
+  h+='<label class="f">Website link<input id="lf-url" type="url" required value="'+esc(p.url)+'" placeholder="https://…"></label>';
+  h+='<div class="row2"><label class="f">Title<input id="lf-title" type="text" value="'+esc(p.title)+'" maxlength="80"></label><label class="f">Type<select id="lf-cat">'+opts+'</select></label></div>';
+  h+='<label class="f">Short description <small>One or two sentences</small><textarea id="lf-desc" maxlength="400">'+esc(p.desc)+'</textarea></label>';
+  h+='<label class="f">Tags <small>Separate with commas</small><input id="lf-tags" type="text" value="'+esc((p.tags||[]).join(', '))+'" placeholder="React, Multiplayer, Unity"></label>';
+  h+='<div class="f" style="display:grid;gap:6px;font-size:13px;font-weight:600">Cover image <small style="font-weight:400;color:var(--muted)">Optional. Without one, the card gets its own drum pattern.</small><div class="imgrow"><div class="thumb" id="lf-thumb"></div><label class="btn sm" for="lf-file">Upload image</label><input id="lf-file" type="file" accept="image/*" hidden><button class="btn sm ghost" type="button" id="lf-noimg"'+(p.image?'':' hidden')+'>Remove image</button></div></div>';
+  h+='<label class="check"><input id="lf-feat" type="checkbox"'+(p.featured?' checked':'')+'> Feature this project (shows as a wide card)</label>';
+  h+='<p class="err" id="lf-err"></p><div class="modal-actions"><button class="btn ghost" type="button" id="lf-cancel">Cancel</button><button class="btn primary" type="submit">'+(isNew?'Add card':'Update card')+'</button></div></form>';
+  openModal(h,function(m){
+    var thumb=$('#lf-thumb',m);
+    function draw(){thumb.innerHTML=p.image?'<img src="'+esc(p.image)+'" alt="">':coverSVG({title:$('#lf-title',m).value,url:$('#lf-url',m).value});$('#lf-noimg',m).hidden=!p.image}
+    draw();
+    $('#lf-url',m).addEventListener('change',function(){var u=safeUrl(this.value);var t=$('#lf-title',m);if(u&&!t.value)t.value=guessTitle(u);draw()});
+    $('#lf-title',m).addEventListener('input',function(){if(!p.image)draw()});
+    $('#lf-file',m).addEventListener('change',function(){var f=this.files&&this.files[0];if(!f)return;shrink(f).then(function(url){p.image=url;draw()}).catch(function(){$('#lf-err',m).textContent='That image could not be read. Try a JPG or PNG.'})});
+    $('#lf-noimg',m).addEventListener('click',function(){p.image='';draw()});
+    $('#lf-cancel',m).addEventListener('click',closeModal);
+    $('#linkForm',m).addEventListener('submit',function(e){e.preventDefault();
+      var u=safeUrl($('#lf-url',m).value);if(!u){$('#lf-err',m).textContent='Enter a website link that starts with http:// or https://.';return}
+      p.url=u;p.title=$('#lf-title',m).value.trim()||guessTitle(u)||host(u);p.category=$('#lf-cat',m).value;p.desc=$('#lf-desc',m).value.trim();p.tags=list($('#lf-tags',m).value);p.featured=$('#lf-feat',m).checked;delete p.sample;
+      if(isNew){p.id=uid();d.projects.unshift(p)}else{d.projects[idx]=p}
+      closeModal();S.filter='All';render();toast(isNew?'Card added. Save to make it live.':'Card updated.')});
+  })}
+
+function shrink(file){return new Promise(function(res,rej){var url=URL.createObjectURL(file);var img=new Image();img.onload=function(){var W=960,H=480,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');var s=Math.max(W/img.width,H/img.height),w=img.width*s,h=img.height*s;x.drawImage(img,(W-w)/2,(H-h)/2,w,h);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',.78))};img.onerror=function(){URL.revokeObjectURL(url);rej()};img.src=url})}
+
+function profileModal(){
+  var P=S.data.profile;
+  var contacts=(P.contact||[]).map(function(c){return c.label+' | '+c.url}).join('\n');
+  var h='<h2>Edit about me</h2><p class="sub">Changes go live when you choose Save.</p><form id="pf" class="fields" novalidate>';
+  h+='<div class="row2"><label class="f">Name<input id="pf-name" type="text" value="'+esc(P.name)+'"></label><label class="f">Initials <small>Shown in the round badge</small><input id="pf-ini" type="text" maxlength="3" value="'+esc(P.initials)+'"></label></div>';
+  h+='<div class="row2"><label class="f">Role line<input id="pf-role" type="text" value="'+esc(P.role)+'"></label><label class="f">Location<input id="pf-loc" type="text" value="'+esc(P.location)+'"></label></div>';
+  h+='<label class="f">Tagline<input id="pf-tag" type="text" value="'+esc(P.tagline)+'"></label>';
+  h+='<div class="row2"><label class="f">What you are doing now<input id="pf-now" type="text" value="'+esc(P.now)+'"></label><label class="f">Comfort tempo (BPM)<input id="pf-bpm" type="number" min="60" max="200" value="'+esc(P.bpm)+'"></label></div>';
+  h+='<label class="f">About me <small>Leave a blank line between paragraphs</small><textarea id="pf-about" rows="8">'+esc((P.about||[]).join('\n\n'))+'</textarea></label>';
+  h+='<label class="f">Drumming intro<textarea id="pf-drums" rows="3">'+esc(P.drumsIntro)+'</textarea></label>';
+  h+='<div class="row2"><label class="f">Styles you play <small>Commas</small><input id="pf-genres" type="text" value="'+esc((P.genres||[]).join(', '))+'"></label><label class="f">Your kit <small>Commas, e.g. Tama Starclassic, Zildjian K</small><input id="pf-kit" type="text" value="'+esc((P.kit||[]).join(', '))+'"></label></div>';
+  h+='<label class="f">Coding intro<textarea id="pf-code" rows="3">'+esc(P.codeIntro)+'</textarea></label>';
+  h+='<label class="f">Languages and tools <small>Commas</small><input id="pf-stack" type="text" value="'+esc((P.stack||[]).join(', '))+'"></label>';
+  h+='<label class="f">Public email <small>Optional. Shown on the About tab with a copy button</small><input id="pf-email" type="email" value="'+esc(P.email)+'"></label>';
+  h+='<label class="f">Social and profile links <small>One per line as Label | link, e.g. GitHub | github.com/you</small><textarea id="pf-contact" rows="4" placeholder="GitHub | github.com/yourname&#10;YouTube | youtube.com/@yourchannel">'+esc(contacts)+'</textarea></label>';
+  h+='<label class="f">Project types <small>Commas. These are the filter buttons</small><input id="pf-cats" type="text" value="'+esc(S.data.categories.join(', '))+'"></label>';
+  h+='<div class="modal-actions"><button class="btn ghost" type="button" id="pf-cancel">Cancel</button><button class="btn primary" type="submit">Apply</button></div></form>';
+  openModal(h,function(m){
+    $('#pf-cancel',m).addEventListener('click',closeModal);
+    $('#pf',m).addEventListener('submit',function(e){e.preventDefault();
+      function v(id){return $(id,m).value.trim()}
+      P.name=v('#pf-name')||'Your name';P.initials=v('#pf-ini').toUpperCase()||initials(P.name);P.role=v('#pf-role');P.location=v('#pf-loc');P.tagline=v('#pf-tag');P.now=v('#pf-now');
+      var b=parseInt(v('#pf-bpm'),10);P.bpm=(b>=60&&b<=200)?b:96;A.bpm=null;
+      P.about=$('#pf-about',m).value.split(/\n\s*\n/).map(function(x){return x.trim()}).filter(Boolean);
+      P.drumsIntro=v('#pf-drums');P.genres=list(v('#pf-genres'));P.kit=list(v('#pf-kit'));P.codeIntro=v('#pf-code');P.stack=list(v('#pf-stack'));P.email=v('#pf-email');
+      P.contact=$('#pf-contact',m).value.split('\n').map(function(line){var parts=line.split('|');if(parts.length<2)return null;var u=safeUrl(parts.slice(1).join('|'));var l=parts[0].trim();return (u&&l)?{label:l,url:u}:null}).filter(Boolean);
+      var cats=list(v('#pf-cats'));if(cats.length){S.data.categories=cats;S.data.projects.forEach(function(p){if(cats.indexOf(p.category)<0&&cats.indexOf('Other')<0)cats.push(p.category)})}
+      closeModal();render();toast('About me updated.')});
+  })}
+
+/* ---------- saving to GitHub ---------- */
+var GH_KEY='portfolio-github-v1';
+function ghCfg(){try{var c=JSON.parse(localStorage.getItem(GH_KEY)||'null');return c&&c.token?c:null}catch(e){return null}}
+function ghSetCfg(c){try{if(c)localStorage.setItem(GH_KEY,JSON.stringify(c));else localStorage.removeItem(GH_KEY)}catch(e){}}
+function guessRepo(){var h=location.hostname.toLowerCase(),m=h.match(/^([^.]+)\.github\.io$/);if(!m)return {owner:'',repo:''};var seg=location.pathname.split('/').filter(Boolean)[0];return {owner:m[1],repo:(seg&&!/\.html?$/.test(seg))?seg:h}}
+function ghFetch(cfg,url,opts){opts=opts||{};return fetch('https://api.github.com'+url,{method:opts.method||'GET',cache:'no-store',headers:{'Authorization':'Bearer '+cfg.token,'Accept':'application/vnd.github+json'},body:opts.body?JSON.stringify(opts.body):undefined}).then(function(r){
+  if(r.status===404&&opts.allow404)return null;
+  return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){var e=new Error(j.message||('GitHub error '+r.status));e.status=r.status;throw e}return j})})}
+function ghPath(cfg,path){return '/repos/'+encodeURIComponent(cfg.owner)+'/'+encodeURIComponent(cfg.repo)+'/contents/'+path}
+function ghGet(cfg,path){return ghFetch(cfg,ghPath(cfg,path)+'?ref='+encodeURIComponent(cfg.branch),{allow404:true})}
+function ghPut(cfg,path,b64,msg){return ghGet(cfg,path).then(function(cur){var body={message:msg,content:b64,branch:cfg.branch};if(cur&&cur.sha)body.sha=cur.sha;return ghFetch(cfg,ghPath(cfg,path),{method:'PUT',body:body})})}
+function toB64(str){var bytes=new TextEncoder().encode(str),bin='';for(var i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(bin)}
+function fromB64(b64){var bin=atob(b64.replace(/\s/g,'')),bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new TextDecoder().decode(bytes)}
+
+function loginModal(){
+  var g=guessRepo(),c=ghCfg()||{};
+  var h='<h2>Sign in to edit</h2><p class="sub">Saving writes your changes to your GitHub repository. Your key stays in this browser only, so nobody else can save.</p><form id="gf" class="fields" novalidate>';
+  h+='<div class="row2"><label class="f">GitHub username<input id="gf-owner" type="text" autocomplete="username" value="'+esc(c.owner||g.owner)+'"></label><label class="f">Repository<input id="gf-repo" type="text" value="'+esc(c.repo||g.repo)+'" placeholder="yourname.github.io"></label></div>';
+  h+='<label class="f">GitHub key (personal access token) <small>Make one at github.com/settings/personal-access-tokens/new: give it access to only this repository, with Contents set to Read and write.</small><input id="gf-token" type="password" autocomplete="off" placeholder="github_pat_…"></label>';
+  h+='<label class="f">Branch<input id="gf-branch" type="text" value="'+esc(c.branch||'main')+'"></label>';
+  h+='<p class="err" id="gf-err"></p><div class="modal-actions"><a class="btn ghost" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Create a key ↗</a><button class="btn ghost" type="button" id="gf-cancel">Cancel</button><button class="btn primary" type="submit" id="gf-go">Sign in</button></div></form>';
+  openModal(h,function(m){
+    $('#gf-cancel',m).addEventListener('click',closeModal);
+    $('#gf',m).addEventListener('submit',function(e){e.preventDefault();
+      var cfg={owner:$('#gf-owner',m).value.trim(),repo:$('#gf-repo',m).value.trim(),branch:$('#gf-branch',m).value.trim()||'main',token:$('#gf-token',m).value.trim()};
+      var err=$('#gf-err',m);if(!cfg.owner||!cfg.repo||!cfg.token){err.textContent='Fill in your username, repository and key.';return}
+      $('#gf-go',m).disabled=true;err.textContent='Checking your key…';
+      ghFetch(cfg,'/repos/'+encodeURIComponent(cfg.owner)+'/'+encodeURIComponent(cfg.repo)).then(function(r){
+        if(!r.permissions||!r.permissions.push)throw Object.assign(new Error('This key can read the repository but cannot save to it. Set Contents to Read and write.'),{status:403});
+        ghSetCfg(cfg);closeModal();S.canEdit=true;S.editing=true;
+        return loadFromGitHub(cfg).then(function(){render();toast('Signed in. You can edit now.')});
+      }).catch(function(x){$('#gf-go',m).disabled=false;err.textContent=x.status===401?'GitHub rejected that key. Check you copied all of it.':x.status===404?'Repository not found. Check the username and repository name, and that the key has access to it.':(x.message||'Could not reach GitHub.')});
+    });
+  })}
+
+function loadFromGitHub(cfg){return ghGet(cfg,'data.json').then(function(f){if(f&&f.content){var d=JSON.parse(fromB64(f.content));S.data=d;S.savedJSON=JSON.stringify(d)}})}
+
+function save(){
+  var cfg=ghCfg();if(!cfg)return loginModal();
+  if(S.saving||!dirty())return;
+  S.saving=true;render();
+  try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S.data))}catch(e){}
+  var data=clone(S.data),chain=Promise.resolve();
+  data.projects.forEach(function(p){if(p.image&&p.image.indexOf('data:')===0){chain=chain.then(function(){var path='images/'+p.id+'-'+Date.now().toString(36)+'.jpg';return ghPut(cfg,path,p.image.split(',')[1],'Add cover image for '+p.title).then(function(){p.image=path})})}});
+  chain.then(function(){return ghPut(cfg,'data.json',toB64(JSON.stringify(data,null,2)+'\n'),'Update site content')}).then(function(){
+    S.data=data;S.savedJSON=JSON.stringify(data);S.saving=false;try{localStorage.removeItem(DRAFT_KEY)}catch(e){}
+    render();toast('Saved. The public site updates in about a minute.');
+  }).catch(function(e){
+    S.saving=false;render();
+    if(e.status===401){ghSetCfg(null);toast('Your GitHub key has expired or was removed. Sign in again, then save.');loginModal()}
+    else if(e.status===403||e.status===404)toast('Your key cannot save to '+cfg.owner+'/'+cfg.repo+'. Check its Contents permission is Read and write.');
+    else if(e.status===409||e.status===422)toast('The site changed somewhere else. Reload the page and try again. Your edits are kept.');
+    else toast('Saving failed. Check your connection and try again. Your edits are kept.');
+  });
+}
+
+/* ---------- toast ---------- */
+var tt;function toast(msg){var t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';t.setAttribute('role','status');document.body.appendChild(t)}t.textContent=msg;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},3800)}
+
+/* ---------- events ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button,a');if(!t)return;
+  if(t.dataset.tab){e.preventDefault();S.tab=t.dataset.tab;try{history.replaceState(null,'','#'+S.tab)}catch(_){}render();var v=document.getElementById(S.tab);if(v&&window.scrollY>300)v.scrollIntoView({behavior:'smooth',block:'start'});return}
+  if(t.classList.contains('step')){var L=t.dataset.lane,s=+t.dataset.s;pat[L][s]=!pat[L][s];paintSteps();return}
+  if(t.id==='play')return togglePlay();
+  if(t.id==='bpmUp')return bump(4);
+  if(t.id==='bpmDown')return bump(-4);
+  if(t.dataset.filter){S.filter=t.dataset.filter;render();return}
+  if(t.id==='copyMail'){var m=S.data.profile.email;var p=navigator.clipboard&&navigator.clipboard.writeText(m);if(p)p.then(function(){toast('Email copied.')},function(){selectMail()});else selectMail();return}
+  if(t.id==='startEdit'){S.editing=true;render();return}
+  if(t.id==='stopEdit'){S.editing=false;S.confirmDel=null;render();if(dirty())toast('You still have unsaved changes. Choose Edit site, then Save.');return}
+  if(t.id==='addLink')return linkModal(null);
+  if(t.id==='editProfile')return profileModal();
+  if(t.id==='discard'){S.data=JSON.parse(S.savedJSON);S.confirmDel=null;render();toast('Changes discarded.');return}
+  if(t.id==='save')return save();
+  if(t.id==='signOut'){ghSetCfg(null);S.canEdit=false;S.editing=false;render();toast(dirty()?'Signed out. Unsaved changes stay in this tab until you reload.':'Signed out.');return}
+  if(t.id==='restore'){S.data=S.draft;S.draft=null;S.editing=true;render();toast('Earlier edits restored. Save when ready.');return}
+  if(t.id==='dropDraft'){S.draft=null;try{localStorage.removeItem(DRAFT_KEY)}catch(_){}render();return}
+  if(t.dataset.edit!=null)return linkModal(+t.dataset.edit);
+  if(t.dataset.askdel){S.confirmDel=t.dataset.askdel;render();setTimeout(function(){if(S.confirmDel===t.dataset.askdel){S.confirmDel=null;render()}},4000);return}
+  if(t.dataset.del!=null){S.data.projects.splice(+t.dataset.del,1);S.confirmDel=null;render();return}
+  if(t.dataset.move){var i=+t.dataset.i,j=i+(+t.dataset.move),arr=S.data.projects;if(j<0||j>=arr.length)return;var x=arr[i];arr[i]=arr[j];arr[j]=x;render();return}
+});
+document.addEventListener('submit',function(e){if(e.target.id==='quick'){e.preventDefault();var u=safeUrl($('#quickUrl').value);if(!u){toast('Paste a website link first, e.g. mysite.com');return}linkModal(null,u)}});
+function selectMail(){var c=$('.mail code');if(!c)return;var r=document.createRange();r.selectNodeContents(c);var s=getSelection();s.removeAllRanges();s.addRange(r);toast('Email selected. Press Ctrl+C to copy.')}
+window.addEventListener('hashchange',function(){if(location.hash==='#edit'){if(ghCfg()){S.canEdit=true;S.editing=true;render()}else loginModal();return}var t=location.hash==='#about'?'about':'projects';if(t!==S.tab){S.tab=t;render()}});
+
+/* ---------- start ---------- */
+function boot(){
+  var cfg=ghCfg();
+  var load=cfg?loadFromGitHub(cfg).catch(function(){return loadPublic()}):loadPublic();
+  load.then(function(){
+    if(!S.data){S.loadMsg='The site content could not be loaded. Refresh the page to try again.';render();return}
+    if(cfg){S.canEdit=true;try{var raw=localStorage.getItem(DRAFT_KEY);if(raw){if(raw===S.savedJSON)localStorage.removeItem(DRAFT_KEY);else S.draft=JSON.parse(raw)}}catch(e){}}
+    render();
+    if(location.hash==='#edit'){if(cfg){S.editing=true;render()}else loginModal()}
+  });
+}
+function loadPublic(){return fetch('data.json?v='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){S.data=d;S.savedJSON=JSON.stringify(d)}).catch(function(){})}
+boot();
+})();
+</script>
+</body>
+</html>

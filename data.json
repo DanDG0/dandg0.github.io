@@ -1,0 +1,82 @@
+{
+  "profile": {
+    "name": "Daniel de Gois",
+    "initials": "DG",
+    "role": "Drummer · Developer",
+    "tagline": "I keep time on the kit and build things on the screen: web apps, games and software.",
+    "location": "South Africa",
+    "now": "Building this site",
+    "bpm": 96,
+    "about": [
+      "I'm Daniel, a drummer and a developer. Most days I split my time between the kit and a code editor, and the two have more in common than people think. Both reward patience, repetition and a good sense of timing.",
+      "On the software side I build web applications, games and small tools. I like taking an idea from a rough sketch to something people can actually click on and use.",
+      "This site is my home base. Every project I make has a link here, so the Projects tab is the place to see what I've been working on."
+    ],
+    "drumsIntro": "Behind the kit I care about groove first: playing for the song, locking in with the bass and keeping the pocket steady.",
+    "genres": [
+      "Rock",
+      "Funk",
+      "Pop"
+    ],
+    "kit": [],
+    "codeIntro": "I build for the browser first, and I'm always picking up new tools along the way.",
+    "stack": [
+      "JavaScript",
+      "HTML & CSS",
+      "Web apps",
+      "Game development"
+    ],
+    "email": "",
+    "contact": []
+  },
+  "categories": [
+    "Web app",
+    "Game",
+    "Software",
+    "Music",
+    "Other"
+  ],
+  "projects": [
+    {
+      "id": "s1",
+      "title": "Groove Trainer",
+      "url": "https://example.com/groove-trainer",
+      "desc": "A practice tool that plays a click and grades how tightly you lock to it. Replace this sample card with one of your own projects.",
+      "category": "Web app",
+      "tags": [
+        "JavaScript",
+        "Web Audio"
+      ],
+      "image": "",
+      "featured": true,
+      "sample": true
+    },
+    {
+      "id": "s2",
+      "title": "Pixel Drummer",
+      "url": "https://example.com/pixel-drummer",
+      "desc": "A rhythm game where every hit lands on the beat. This is a sample card.",
+      "category": "Game",
+      "tags": [
+        "Game",
+        "Canvas"
+      ],
+      "image": "",
+      "featured": false,
+      "sample": true
+    },
+    {
+      "id": "s3",
+      "title": "Setlist Manager",
+      "url": "https://example.com/setlists",
+      "desc": "Plan gigs, reorder songs and keep tempos for every tune. This is a sample card.",
+      "category": "Software",
+      "tags": [
+        "Tool"
+      ],
+      "image": "",
+      "featured": false,
+      "sample": true
+    }
+  ]
+}
