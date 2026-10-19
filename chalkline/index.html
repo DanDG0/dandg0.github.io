@@ -2005,7 +2005,7 @@ document.addEventListener("click", e => {
     case "country": return countrySheet();
     case "subjects": return subjectsSheet();
     case "fb-signout": return confirmSheet("Sign out?", "Your plans stay safe in your account. Sign in again on any device to get them back.", "Sign out", fbSignOut);
-    case "fb-signin": return fb.signIn().then(ok => { if (ok) { setGuest(false); location.reload(); } }, () => toast("Sign-in didn’t work. Try again in Chrome or Safari."));
+    case "fb-signin": return fb.signIn().then(ok => { if (ok) { setGuest(false); location.reload(); } }, x => toast(signInError(x)));
     case "reset": return confirmSheet("Sign out and erase?", "Your profile, saves and calendar are deleted. Lessons you shared stay in the public listings.", "Erase my data", () => {
       S = blank(); persist(); while (screens.length) popScreen(); applyTheme(); showOnboarding();
     });
@@ -2073,9 +2073,16 @@ function showSignIn() {
   $("#si-google").onclick = async e => {
     const btn = e.currentTarget, er = $("#si-err"); btn.disabled = true; er.hidden = true;
     try { if (await fb.signIn()) { setGuest(false); location.reload(); } else btn.disabled = false; }
-    catch (x) { btn.disabled = false; er.hidden = false; er.textContent = "Sign-in didn’t work. If you opened this inside another app, open it in Chrome or Safari and try again."; }
+    catch (x) { btn.disabled = false; er.hidden = false; er.textContent = signInError(x); }
   };
   $("#si-guest").onclick = () => { setGuest(true); $("#onb-root").innerHTML = ""; if (!S.profile) showOnboarding(); else showApp(); };
+}
+function signInError(x) {
+  const c = String(x?.code || "");
+  if (c.includes("configuration-not-found") || c.includes("operation-not-allowed")) return "Google sign-in isn’t switched on for this app yet (Firebase → Authentication → Sign-in method → Google). Use “Continue as guest” for now.";
+  if (c.includes("unauthorized-domain")) return "This web address isn’t approved for sign-in yet (Firebase → Authentication → Settings → Authorized domains).";
+  if (c.includes("network")) return "No internet connection. Check your connection and try again.";
+  return "Sign-in didn’t work" + (c ? ` (${c.replace("auth/", "")})` : "") + ". If you opened this inside another app, open it in Chrome or Safari and try again.";
 }
 async function fbSignOut() { try { await fb.signOut(); } catch (e) { } try { localStorage.removeItem(LS_KEY); } catch (e) { } setGuest(false); location.reload(); }
 
