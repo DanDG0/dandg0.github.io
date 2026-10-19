@@ -5,29 +5,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Daniel de Gois</title>
 <meta name="description" content="Drummer and developer. Web apps, games and software by Daniel de Gois.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <style id="app-style">
-/* Layout: left-weighted name with a playable drum-machine panel beside it, a sticky tab bar, then a grid of project link cards. */
+/* Layout: left-aligned intro, sticky tab bar, then a grid of project link cards. */
 :root{
-  --bg:#ECEEF2; --surface:#F8F9FB; --raised:#FFFFFF; --ink:#151821; --muted:#596074; --line:#D4D8E0;
-  --brass:#946409; --brass-ink:#FFFFFF; --brass-soft:#F1E5C8;
-  --shell:#1C2135; --shell-ink:#E9EBF2; --shell-dim:#353C59; --shell-mute:#8E95B0;
-  --danger:#B3261E; --ok:#1F7A4D;
-  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --bg:#F5F7FA; --surface:#EEF1F5; --raised:#FFFFFF; --ink:#111827; --muted:#5B6474; --line:#DDE2E9;
+  --brass:#1F4FD1; --brass-ink:#FFFFFF; --brass-soft:#E3EAFB;
+  --shell:#141A26; --shell-ink:#E8ECF3; --shell-dim:#2A3346; --shell-mute:#8F9AB0;
+  --danger:#B42318; --ok:#1F7A4D;
+  --display:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
   --r:10px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0F1117; --surface:#151821; --raised:#1B1F2C; --ink:#ECEEF3; --muted:#9AA1B4; --line:#2A2F3D;
-  --brass:#E2B24F; --brass-ink:#1A1405; --brass-soft:#3A2F17;
-  --shell:#171B2B; --shell-ink:#E9EBF2; --shell-dim:#2C3350; --shell-mute:#8289A6;
+  --bg:#0C1017; --surface:#121824; --raised:#161D2A; --ink:#E7EBF2; --muted:#98A2B5; --line:#253044;
+  --brass:#7EA2FF; --brass-ink:#0B1530; --brass-soft:#1A2644;
+  --shell:#0F1520; --shell-ink:#E8ECF3; --shell-dim:#26304A; --shell-mute:#8792AA;
   --danger:#FF8A80; --ok:#6FD3A0; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0F1117; --surface:#151821; --raised:#1B1F2C; --ink:#ECEEF3; --muted:#9AA1B4; --line:#2A2F3D;
-  --brass:#E2B24F; --brass-ink:#1A1405; --brass-soft:#3A2F17;
-  --shell:#171B2B; --shell-ink:#E9EBF2; --shell-dim:#2C3350; --shell-mute:#8289A6;
+  --bg:#0C1017; --surface:#121824; --raised:#161D2A; --ink:#E7EBF2; --muted:#98A2B5; --line:#253044;
+  --brass:#7EA2FF; --brass-ink:#0B1530; --brass-soft:#1A2644;
+  --shell:#0F1520; --shell-ink:#E8ECF3; --shell-dim:#26304A; --shell-mute:#8792AA;
   --danger:#FF8A80; --ok:#6FD3A0; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
@@ -40,7 +40,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;text-decoration:none;margin-right:auto;min-width:0}
-.mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--shell);color:var(--brass);font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.04em;box-shadow:inset 0 0 0 3px var(--shell-dim)}
+.mark{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:var(--shell);color:var(--brass);font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.02em}
 .brand span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
 .tab{border:0;background:none;padding:6px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;color:var(--muted);text-decoration:none}
@@ -55,38 +55,19 @@ button,input,select,textarea{font:inherit;color:inherit}
 .btn.sm{padding:5px 10px;font-size:13px}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center;padding-block:clamp(36px,7vw,80px) clamp(28px,5vw,56px)}
+.hero{padding-block:clamp(44px,8vw,96px) clamp(32px,5vw,56px);max-width:860px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.hero-cta .btn{padding:11px 18px;font-size:15px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin:0 0 12px}
-h1{font-family:var(--display);font-weight:900;font-size:clamp(56px,10vw,128px);line-height:.86;letter-spacing:-.01em;margin:0;text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
-.lede{font-size:clamp(18px,2vw,21px);max-width:34ch;margin:20px 0 0;color:var(--ink)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(44px,7vw,84px);line-height:1;letter-spacing:-.03em;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+.lede{font-size:clamp(18px,2vw,22px);max-width:40ch;margin:20px 0 0;color:var(--muted)}
 .facts{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:24px;font-family:var(--mono);font-size:13px;color:var(--muted)}
 .facts b{color:var(--ink);font-weight:600}
-
-/* drum machine */
-.seq{background:var(--shell);color:var(--shell-ink);border-radius:16px;padding:18px;box-shadow:0 1px 0 var(--shell-dim) inset,0 18px 40px -24px rgba(0,0,0,.6);min-width:0}
-.seq-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-.seq-title{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--shell-mute);margin-right:auto}
-.play{width:42px;height:42px;border-radius:50%;border:0;background:var(--brass);color:var(--brass-ink);cursor:pointer;display:grid;place-items:center}
-.play svg{width:16px;height:16px}
-.tempo{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;background:var(--shell-dim);border-radius:8px;padding:4px}
-.tempo button{border:0;background:transparent;color:var(--shell-ink);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1}
-.tempo button:hover{background:rgba(255,255,255,.08)}
-.tempo output{min-width:7ch;text-align:center;font-variant-numeric:tabular-nums}
-.grid{display:grid;grid-template-columns:34px repeat(16,minmax(0,1fr));gap:4px;align-items:center}
-.lane{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--shell-mute)}
-.step{aspect-ratio:1/1.35;max-width:100%;border:0;border-radius:4px;background:var(--shell-dim);cursor:pointer;padding:0;transition:background .08s}
-.step.beat{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.step.on{background:var(--brass)}
-.step.now{outline:2px solid var(--shell-ink);outline-offset:0}
-.counts{display:contents}
-.count{font-family:var(--mono);font-size:9px;text-align:center;color:var(--shell-mute);padding-top:2px}
-.count.n{color:var(--shell-ink)}
-.seq-foot{margin-top:12px;font-size:12px;color:var(--shell-mute)}
 
 /* sections */
 .view{padding-block:8px 96px}
 .sec-head{display:flex;align-items:end;gap:16px 24px;flex-wrap:wrap;margin-bottom:24px}
-h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,4.5vw,48px);line-height:1;margin:0;text-transform:uppercase;letter-spacing:.01em}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.6vw,38px);line-height:1.1;margin:0;letter-spacing:-.02em}
 .count-badge{font-family:var(--mono);font-size:13px;color:var(--muted);margin-left:8px;vertical-align:middle}
 .filters{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
 .chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
@@ -176,8 +157,8 @@ label.f small{font-weight:400;color:var(--muted)}
 
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;max-width:calc(100% - 32px);box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
 
-@media (max-width:860px){.hero{grid-template-columns:1fr}.about{grid-template-columns:1fr}}
-@media (max-width:480px){.grid{grid-template-columns:24px repeat(16,minmax(0,1fr));gap:3px}.seq{padding:14px}.tabs .tab{padding:6px 12px}}
+@media (max-width:860px){.about{grid-template-columns:1fr}}
+@media (max-width:480px){.tabs .tab{padding:6px 12px}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}.card:hover{transform:none}}
 body.editing{padding-bottom:84px}
 </style>
@@ -210,18 +191,15 @@ function list(s){return String(s||'').split(',').map(function(x){return x.trim()
 function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function rng(seed){return function(){seed=(seed+0x6D2B79F5)|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 
-/* Each project gets its own one-bar groove as cover art */
+/* Each project gets a generated cover: a calm colour field with a browser-window motif */
+var COVERS=[['#1E3A8A','#2F5BD3'],['#0F4C5C','#1B7F8C'],['#27303F','#4A5568'],['#3B2F6B','#5B4BB0'],['#14532D','#23784A'],['#5B2140','#8A3A63']];
 function coverSVG(p){
-  var h=hash((p.title||'')+(p.url||'')), r=rng(h), hue=h%360;
-  var bg='hsl('+hue+' 38% 22%)', bg2='hsl('+((hue+40)%360)+' 45% 30%)';
-  var rows=[[],[],[]];
-  for(var i=0;i<16;i++){rows[0].push(r()<(i%2?0.35:0.9));rows[1].push((i===4||i===12)?true:r()<0.12);rows[2].push(i===0?true:r()<(i%4===0?0.5:0.18))}
-  var W=320,H=160,cw=14,gap=3,x0=(W-(16*cw+15*gap))/2,y0=46,ch=18;
-  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="g'+h+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+bg+'"/><stop offset="1" stop-color="'+bg2+'"/></linearGradient></defs><rect width="'+W+'" height="'+H+'" fill="url(#g'+h+')"/>';
-  s+='<circle cx="'+(W-36)+'" cy="'+(H+10)+'" r="90" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="18"/>';
-  for(var row=0;row<3;row++)for(var c=0;c<16;c++){var on=rows[row][c];var x=x0+c*(cw+gap),y=y0+row*(ch+6);
-    s+='<rect x="'+x.toFixed(1)+'" y="'+y+'" width="'+cw+'" height="'+ch+'" rx="3" fill="'+(on?(row===1?'hsl('+((hue+180)%360)+' 80% 72%)':'rgba(255,255,255,.88)'):'rgba(255,255,255,.12)')+'"/>'}
-  s+='</svg>';return s}
+  var h=hash((p.title||'')+(p.url||'')),c=COVERS[h%COVERS.length],W=320,H=160,id='g'+h;
+  var ini=esc(String(p.title||'?').trim().charAt(0).toUpperCase()||'?');
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></linearGradient><pattern id="d'+id+'" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,.14)"/></pattern></defs><rect width="'+W+'" height="'+H+'" fill="url(#'+id+')"/><rect width="'+W+'" height="'+H+'" fill="url(#d'+id+')"/>';
+  s+='<g transform="translate(70 30)"><rect width="180" height="112" rx="8" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.28)"/><rect width="180" height="18" rx="8" fill="rgba(255,255,255,.16)"/><circle cx="11" cy="9" r="2.6" fill="rgba(255,255,255,.7)"/><circle cx="20" cy="9" r="2.6" fill="rgba(255,255,255,.5)"/><circle cx="29" cy="9" r="2.6" fill="rgba(255,255,255,.35)"/>';
+  s+='<text x="22" y="74" font-family="Manrope,Segoe UI,sans-serif" font-weight="800" font-size="38" fill="#fff">'+ini+'</text><rect x="70" y="44" width="88" height="7" rx="3.5" fill="rgba(255,255,255,.55)"/><rect x="70" y="58" width="64" height="7" rx="3.5" fill="rgba(255,255,255,.3)"/><rect x="70" y="72" width="76" height="7" rx="3.5" fill="rgba(255,255,255,.3)"/><rect x="22" y="90" width="44" height="12" rx="6" fill="rgba(255,255,255,.8)"/></g></svg>';
+  return s}
 function coverHTML(p){return p.image?'<img src="'+esc(p.image)+'" alt="">':coverSVG(p)}
 
 /* ---------- render ---------- */
@@ -242,10 +220,10 @@ function render(){
   if(real) h+='<span><b>'+real+'</b> project'+(real===1?'':'s')+'</span>';
   if(P.location) h+='<span>Based in <b>'+esc(P.location)+'</b></span>';
   if(P.now) h+='<span>Now: <b>'+esc(P.now)+'</b></span>';
-  h+='</div></div>'+seqHTML()+'</section>';
+  h+='</div><div class="hero-cta"><a class="btn primary" href="#projects" data-tab="projects">View projects</a><a class="btn" href="#about" data-tab="about">About me</a></div></div></section>';
   h+=S.tab==='about'?aboutHTML():projectsHTML();
   h+='</div>';
-  h+='<footer><div class="wrap"><span>© '+new Date().getFullYear()+' '+esc(P.name)+'</span><span>Built in 4/4</span></div></footer>';
+  h+='<footer><div class="wrap"><span>© '+new Date().getFullYear()+' '+esc(P.name)+'</span><span>Made by '+esc(P.name)+'</span></div></footer>';
   if(S.editing){
     h+='<div class="editbar" role="region" aria-label="Editing"><div class="wrap"><span class="status"><span class="dot'+(dirty()?' dirty':'')+'"></span>'+(dirty()?'Unsaved changes':'Editing · no changes yet')+'</span>';
     h+='<button class="btn sm" id="addLink" type="button">+ Add link</button><button class="btn sm" id="editProfile" type="button">Edit about me</button>';
@@ -256,7 +234,6 @@ function render(){
   }
   document.body.classList.toggle('editing',S.editing);
   app.innerHTML=h;
-  paintSteps();
 }
 function initials(n){return String(n||'?').split(/\s+/).filter(Boolean).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase()}
 
@@ -293,13 +270,12 @@ function aboutHTML(){
   var P=S.data.profile,h='<section class="view" id="about" aria-labelledby="ah"><div class="sec-head"><h2 id="ah">About me</h2></div><div class="about"><div class="prose">';
   (P.about||[]).forEach(function(par){h+='<p>'+esc(par)+'</p>'});
   h+='</div><div class="side">';
-  h+='<div class="panel"><h3>Behind the kit</h3>'+(P.drumsIntro?'<p>'+esc(P.drumsIntro)+'</p>':'');
+  h+='<div class="panel"><h3>What I work with</h3>'+(P.codeIntro?'<p>'+esc(P.codeIntro)+'</p>':'');
+  if(P.stack&&P.stack.length){h+='<ul class="pills">';P.stack.forEach(function(g){h+='<li>'+esc(g)+'</li>'});h+='</ul>'}
+  h+='</div>';
+  h+='<div class="panel"><h3>Outside of code</h3>'+(P.drumsIntro?'<p>'+esc(P.drumsIntro)+'</p>':'');
   if(P.genres&&P.genres.length){h+='<ul class="pills">';P.genres.forEach(function(g){h+='<li>'+esc(g)+'</li>'});h+='</ul>'}
   if(P.kit&&P.kit.length){h+='<ul class="kit" style="margin-top:14px">';P.kit.forEach(function(k){h+='<li>'+esc(k)+'</li>'});h+='</ul>'}
-  if(P.bpm) h+='<p style="margin:14px 0 0;font-family:var(--mono);font-size:13px">Comfort tempo: ♩ = '+esc(P.bpm)+'</p>';
-  h+='</div>';
-  h+='<div class="panel"><h3>At the keyboard</h3>'+(P.codeIntro?'<p>'+esc(P.codeIntro)+'</p>':'');
-  if(P.stack&&P.stack.length){h+='<ul class="pills">';P.stack.forEach(function(g){h+='<li>'+esc(g)+'</li>'});h+='</ul>'}
   h+='</div>';
   if((P.contact&&P.contact.length)||P.email){
     h+='<div class="panel"><h3>Find me</h3>';
@@ -309,32 +285,6 @@ function aboutHTML(){
   }
   return h+'</div></div></section>';
 }
-
-/* ---------- drum machine ---------- */
-var LANES=[{k:'hh',n:'HH'},{k:'sn',n:'SN'},{k:'bd',n:'BD'}];
-var pat={hh:[],sn:[],bd:[]};
-for(var i=0;i<16;i++){pat.hh[i]=i%2===0;pat.sn[i]=(i===4||i===12);pat.bd[i]=(i===0||i===8||i===10)}
-var A={ctx:null,noise:null,playing:false,step:0,next:0,timer:null,bpm:null,cur:-1};
-function seqHTML(){
-  var bpm=A.bpm||S.data.profile.bpm||96;
-  var h='<div class="seq" aria-label="Drum machine"><div class="seq-head"><span class="seq-title">Groove · 4/4 · 16 steps</span>';
-  h+='<div class="tempo"><button type="button" id="bpmDown" aria-label="Slower">−</button><output id="bpmOut">♩ = '+bpm+'</output><button type="button" id="bpmUp" aria-label="Faster">+</button></div>';
-  h+='<button class="play" type="button" id="play" aria-label="'+(A.playing?'Stop':'Play')+'">'+(A.playing?'<svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="1.5" fill="currentColor"/></svg>':'<svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z" fill="currentColor"/></svg>')+'</button></div><div class="grid">';
-  LANES.forEach(function(L){h+='<span class="lane">'+L.n+'</span>';for(var i=0;i<16;i++)h+='<button type="button" class="step'+(i%4===0?' beat':'')+'" data-lane="'+L.k+'" data-s="'+i+'" aria-label="'+L.n+' step '+(i+1)+'"></button>'});
-  h+='<span></span>';var lab=['1','e','&','a'];for(var j=0;j<16;j++)h+='<span class="count'+(j%4===0?' n':'')+'">'+(j%4===0?(j/4+1):lab[j%4])+'</span>';
-  h+='</div><p class="seq-foot">Tap the pads to write a beat, then press play.</p></div>';
-  return h}
-function paintSteps(){document.querySelectorAll('.step').forEach(function(b){var on=pat[b.dataset.lane][+b.dataset.s];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.classList.toggle('now',+b.dataset.s===A.cur)})}
-function setNow(s){A.cur=s;document.querySelectorAll('.step').forEach(function(b){b.classList.toggle('now',+b.dataset.s===s)})}
-function ctx(){if(!A.ctx){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;A.ctx=new C();var len=A.ctx.sampleRate;var buf=A.ctx.createBuffer(1,len,A.ctx.sampleRate);var d=buf.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;A.noise=buf}return A.ctx}
-function noise(t,hp,g0,dur){var c=A.ctx,s=c.createBufferSource();s.buffer=A.noise;var f=c.createBiquadFilter();f.type='highpass';f.frequency.value=hp;var g=c.createGain();g.gain.setValueAtTime(g0,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);s.connect(f).connect(g).connect(c.destination);s.start(t);s.stop(t+dur+.02)}
-function kick(t){var c=A.ctx,o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.14);g.gain.setValueAtTime(.95,t);g.gain.exponentialRampToValueAtTime(.001,t+.42);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.45)}
-function snare(t){noise(t,1200,.55,.18);var c=A.ctx,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(190,t);g.gain.setValueAtTime(.35,t);g.gain.exponentialRampToValueAtTime(.001,t+.1);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.12)}
-function hat(t){noise(t,7500,.22,.05)}
-function tick(){var c=A.ctx;var bpm=A.bpm||S.data.profile.bpm||96;while(A.next<c.currentTime+.12){var s=A.step,t=A.next;if(pat.bd[s])kick(t);if(pat.sn[s])snare(t);if(pat.hh[s])hat(t);(function(s,t){setTimeout(function(){if(A.playing)setNow(s)},Math.max(0,(t-c.currentTime)*1000))})(s,t);A.next+=60/bpm/4;A.step=(A.step+1)%16}}
-function togglePlay(){var c=ctx();if(!c)return toast('Audio is not available in this browser.');if(A.playing){A.playing=false;clearInterval(A.timer);setNow(-1)}else{if(c.state==='suspended')c.resume();A.playing=true;A.step=0;A.next=c.currentTime+.05;A.timer=setInterval(tick,25);tick()}
-  var b=$('#play');if(b){b.setAttribute('aria-label',A.playing?'Stop':'Play');b.innerHTML=A.playing?'<svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="1.5" fill="currentColor"/></svg>':'<svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z" fill="currentColor"/></svg>'}}
-function bump(n){A.bpm=Math.max(60,Math.min(200,(A.bpm||S.data.profile.bpm||96)+n));var o=$('#bpmOut');if(o)o.textContent='♩ = '+A.bpm}
 
 /* ---------- modals ---------- */
 function openModal(html,onMount){closeModal();var back=document.createElement('div');back.className='modal-back';back.id='modalBack';back.innerHTML='<div class="modal" role="dialog" aria-modal="true">'+html+'</div>';document.body.appendChild(back);back.addEventListener('mousedown',function(e){if(e.target===back)closeModal()});if(onMount)onMount(back);var f=back.querySelector('input,textarea,select');if(f)f.focus()}
@@ -350,7 +300,7 @@ function linkModal(idx,prefillUrl){
   h+='<div class="row2"><label class="f">Title<input id="lf-title" type="text" value="'+esc(p.title)+'" maxlength="80"></label><label class="f">Type<select id="lf-cat">'+opts+'</select></label></div>';
   h+='<label class="f">Short description <small>One or two sentences</small><textarea id="lf-desc" maxlength="400">'+esc(p.desc)+'</textarea></label>';
   h+='<label class="f">Tags <small>Separate with commas</small><input id="lf-tags" type="text" value="'+esc((p.tags||[]).join(', '))+'" placeholder="React, Multiplayer, Unity"></label>';
-  h+='<div class="f" style="display:grid;gap:6px;font-size:13px;font-weight:600">Cover image <small style="font-weight:400;color:var(--muted)">Optional. Without one, the card gets its own drum pattern.</small><div class="imgrow"><div class="thumb" id="lf-thumb"></div><label class="btn sm" for="lf-file">Upload image</label><input id="lf-file" type="file" accept="image/*" hidden><button class="btn sm ghost" type="button" id="lf-noimg"'+(p.image?'':' hidden')+'>Remove image</button></div></div>';
+  h+='<div class="f" style="display:grid;gap:6px;font-size:13px;font-weight:600">Cover image <small style="font-weight:400;color:var(--muted)">Optional. Without one, the card gets a generated cover.</small><div class="imgrow"><div class="thumb" id="lf-thumb"></div><label class="btn sm" for="lf-file">Upload image</label><input id="lf-file" type="file" accept="image/*" hidden><button class="btn sm ghost" type="button" id="lf-noimg"'+(p.image?'':' hidden')+'>Remove image</button></div></div>';
   h+='<label class="check"><input id="lf-feat" type="checkbox"'+(p.featured?' checked':'')+'> Feature this project (shows as a wide card)</label>';
   h+='<p class="err" id="lf-err"></p><div class="modal-actions"><button class="btn ghost" type="button" id="lf-cancel">Cancel</button><button class="btn primary" type="submit">'+(isNew?'Add card':'Update card')+'</button></div></form>';
   openModal(h,function(m){
@@ -378,11 +328,11 @@ function profileModal(){
   h+='<div class="row2"><label class="f">Name<input id="pf-name" type="text" value="'+esc(P.name)+'"></label><label class="f">Initials <small>Shown in the round badge</small><input id="pf-ini" type="text" maxlength="3" value="'+esc(P.initials)+'"></label></div>';
   h+='<div class="row2"><label class="f">Role line<input id="pf-role" type="text" value="'+esc(P.role)+'"></label><label class="f">Location<input id="pf-loc" type="text" value="'+esc(P.location)+'"></label></div>';
   h+='<label class="f">Tagline<input id="pf-tag" type="text" value="'+esc(P.tagline)+'"></label>';
-  h+='<div class="row2"><label class="f">What you are doing now<input id="pf-now" type="text" value="'+esc(P.now)+'"></label><label class="f">Comfort tempo (BPM)<input id="pf-bpm" type="number" min="60" max="200" value="'+esc(P.bpm)+'"></label></div>';
+  h+='<label class="f">What you are working on now<input id="pf-now" type="text" value="'+esc(P.now)+'"></label>';
   h+='<label class="f">About me <small>Leave a blank line between paragraphs</small><textarea id="pf-about" rows="8">'+esc((P.about||[]).join('\n\n'))+'</textarea></label>';
-  h+='<label class="f">Drumming intro<textarea id="pf-drums" rows="3">'+esc(P.drumsIntro)+'</textarea></label>';
+  h+='<label class="f">Outside of code (hobbies)<textarea id="pf-drums" rows="3">'+esc(P.drumsIntro)+'</textarea></label>';
   h+='<div class="row2"><label class="f">Styles you play <small>Commas</small><input id="pf-genres" type="text" value="'+esc((P.genres||[]).join(', '))+'"></label><label class="f">Your kit <small>Commas, e.g. Tama Starclassic, Zildjian K</small><input id="pf-kit" type="text" value="'+esc((P.kit||[]).join(', '))+'"></label></div>';
-  h+='<label class="f">Coding intro<textarea id="pf-code" rows="3">'+esc(P.codeIntro)+'</textarea></label>';
+  h+='<label class="f">Intro to what you work with<textarea id="pf-code" rows="3">'+esc(P.codeIntro)+'</textarea></label>';
   h+='<label class="f">Languages and tools <small>Commas</small><input id="pf-stack" type="text" value="'+esc((P.stack||[]).join(', '))+'"></label>';
   h+='<label class="f">Public email <small>Optional. Shown on the About tab with a copy button</small><input id="pf-email" type="email" value="'+esc(P.email)+'"></label>';
   h+='<label class="f">Social and profile links <small>One per line as Label | link, e.g. GitHub | github.com/you</small><textarea id="pf-contact" rows="4" placeholder="GitHub | github.com/yourname&#10;YouTube | youtube.com/@yourchannel">'+esc(contacts)+'</textarea></label>';
@@ -393,7 +343,7 @@ function profileModal(){
     $('#pf',m).addEventListener('submit',function(e){e.preventDefault();
       function v(id){return $(id,m).value.trim()}
       P.name=v('#pf-name')||'Your name';P.initials=v('#pf-ini').toUpperCase()||initials(P.name);P.role=v('#pf-role');P.location=v('#pf-loc');P.tagline=v('#pf-tag');P.now=v('#pf-now');
-      var b=parseInt(v('#pf-bpm'),10);P.bpm=(b>=60&&b<=200)?b:96;A.bpm=null;
+      
       P.about=$('#pf-about',m).value.split(/\n\s*\n/).map(function(x){return x.trim()}).filter(Boolean);
       P.drumsIntro=v('#pf-drums');P.genres=list(v('#pf-genres'));P.kit=list(v('#pf-kit'));P.codeIntro=v('#pf-code');P.stack=list(v('#pf-stack'));P.email=v('#pf-email');
       P.contact=$('#pf-contact',m).value.split('\n').map(function(line){var parts=line.split('|');if(parts.length<2)return null;var u=safeUrl(parts.slice(1).join('|'));var l=parts[0].trim();return (u&&l)?{label:l,url:u}:null}).filter(Boolean);
@@ -464,10 +414,6 @@ var tt;function toast(msg){var t=$('#toast');if(!t){t=document.createElement('di
 document.addEventListener('click',function(e){
   var t=e.target.closest('button,a');if(!t)return;
   if(t.dataset.tab){e.preventDefault();S.tab=t.dataset.tab;try{history.replaceState(null,'','#'+S.tab)}catch(_){}render();var v=document.getElementById(S.tab);if(v&&window.scrollY>300)v.scrollIntoView({behavior:'smooth',block:'start'});return}
-  if(t.classList.contains('step')){var L=t.dataset.lane,s=+t.dataset.s;pat[L][s]=!pat[L][s];paintSteps();return}
-  if(t.id==='play')return togglePlay();
-  if(t.id==='bpmUp')return bump(4);
-  if(t.id==='bpmDown')return bump(-4);
   if(t.dataset.filter){S.filter=t.dataset.filter;render();return}
   if(t.id==='copyMail'){var m=S.data.profile.email;var p=navigator.clipboard&&navigator.clipboard.writeText(m);if(p)p.then(function(){toast('Email copied.')},function(){selectMail()});else selectMail();return}
   if(t.id==='startEdit'){S.editing=true;render();return}
